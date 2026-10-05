@@ -1,0 +1,5 @@
+air_quality.db
+.git
+.env
+venv
+__pycache__

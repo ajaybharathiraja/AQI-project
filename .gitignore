@@ -8,3 +8,5 @@ env/
 .vscode/
 scratch/
 data/*.csv
+
+.vercel
