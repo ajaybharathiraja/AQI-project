@@ -1,0 +1,1507 @@
+{
+  "model_name": "Support Vector Machine",
+  "model_type": "Classification",
+  "purpose": "Future AQI Category Classification",
+  "target": "aqi_category",
+  "target_classes": [
+    "Good",
+    "Satisfactory",
+    "Moderate",
+    "Poor",
+    "Very Poor",
+    "Severe"
+  ],
+  "learned_classes": [
+    "Good",
+    "Moderate",
+    "Poor",
+    "Satisfactory",
+    "Severe",
+    "Very Poor"
+  ],
+  "features": [
+    "hour",
+    "day_of_week",
+    "month",
+    "season",
+    "hour_sin",
+    "hour_cos",
+    "day_of_week_sin",
+    "day_of_week_cos",
+    "month_sin",
+    "month_cos",
+    "pm25_lag_1h",
+    "pm25_lag_3h",
+    "pm25_lag_6h",
+    "pm25_lag_24h",
+    "pm10_lag_1h",
+    "pm10_lag_3h",
+    "pm10_lag_6h",
+    "pm10_lag_24h",
+    "no_lag_1h",
+    "no_lag_3h",
+    "no_lag_6h",
+    "no_lag_24h",
+    "no2_lag_1h",
+    "no2_lag_3h",
+    "no2_lag_6h",
+    "no2_lag_24h",
+    "nh3_lag_1h",
+    "nh3_lag_3h",
+    "nh3_lag_6h",
+    "nh3_lag_24h",
+    "so2_lag_1h",
+    "so2_lag_3h",
+    "so2_lag_6h",
+    "so2_lag_24h",
+    "co_lag_1h",
+    "co_lag_3h",
+    "co_lag_6h",
+    "co_lag_24h",
+    "o3_lag_1h",
+    "o3_lag_3h",
+    "o3_lag_6h",
+    "o3_lag_24h",
+    "pm25_rolling_mean_3h",
+    "pm25_rolling_min_3h",
+    "pm25_rolling_max_3h",
+    "pm25_rolling_count_3h",
+    "pm25_rolling_mean_6h",
+    "pm25_rolling_min_6h",
+    "pm25_rolling_max_6h",
+    "pm25_rolling_count_6h",
+    "pm25_rolling_mean_12h",
+    "pm25_rolling_min_12h",
+    "pm25_rolling_max_12h",
+    "pm25_rolling_count_12h",
+    "pm25_rolling_mean_24h",
+    "pm25_rolling_min_24h",
+    "pm25_rolling_max_24h",
+    "pm25_rolling_count_24h",
+    "temperature_lag_1h",
+    "relative_humidity_lag_1h",
+    "wind_direction_lag_1h_sin",
+    "wind_direction_lag_1h_cos",
+    "pressure_lag_1h",
+    "solar_radiation_lag_1h",
+    "rainfall_lag_1h",
+    "hour__missing",
+    "day_of_week__missing",
+    "month__missing",
+    "season__missing",
+    "hour_sin__missing",
+    "hour_cos__missing",
+    "day_of_week_sin__missing",
+    "day_of_week_cos__missing",
+    "month_sin__missing",
+    "month_cos__missing",
+    "pm25_lag_1h__missing",
+    "pm25_lag_3h__missing",
+    "pm25_lag_6h__missing",
+    "pm25_lag_24h__missing",
+    "pm10_lag_1h__missing",
+    "pm10_lag_3h__missing",
+    "pm10_lag_6h__missing",
+    "pm10_lag_24h__missing",
+    "no_lag_1h__missing",
+    "no_lag_3h__missing",
+    "no_lag_6h__missing",
+    "no_lag_24h__missing",
+    "no2_lag_1h__missing",
+    "no2_lag_3h__missing",
+    "no2_lag_6h__missing",
+    "no2_lag_24h__missing",
+    "nh3_lag_1h__missing",
+    "nh3_lag_3h__missing",
+    "nh3_lag_6h__missing",
+    "nh3_lag_24h__missing",
+    "so2_lag_1h__missing",
+    "so2_lag_3h__missing",
+    "so2_lag_6h__missing",
+    "so2_lag_24h__missing",
+    "co_lag_1h__missing",
+    "co_lag_3h__missing",
+    "co_lag_6h__missing",
+    "co_lag_24h__missing",
+    "o3_lag_1h__missing",
+    "o3_lag_3h__missing",
+    "o3_lag_6h__missing",
+    "o3_lag_24h__missing",
+    "pm25_rolling_mean_3h__missing",
+    "pm25_rolling_min_3h__missing",
+    "pm25_rolling_max_3h__missing",
+    "pm25_rolling_count_3h__missing",
+    "pm25_rolling_mean_6h__missing",
+    "pm25_rolling_min_6h__missing",
+    "pm25_rolling_max_6h__missing",
+    "pm25_rolling_count_6h__missing",
+    "pm25_rolling_mean_12h__missing",
+    "pm25_rolling_min_12h__missing",
+    "pm25_rolling_max_12h__missing",
+    "pm25_rolling_count_12h__missing",
+    "pm25_rolling_mean_24h__missing",
+    "pm25_rolling_min_24h__missing",
+    "pm25_rolling_max_24h__missing",
+    "pm25_rolling_count_24h__missing",
+    "temperature_lag_1h__missing",
+    "relative_humidity_lag_1h__missing",
+    "wind_direction_lag_1h_sin__missing",
+    "wind_direction_lag_1h_cos__missing",
+    "pressure_lag_1h__missing",
+    "solar_radiation_lag_1h__missing",
+    "rainfall_lag_1h__missing",
+    "district_0",
+    "district_1",
+    "district_2",
+    "district_3",
+    "district_4",
+    "district_5",
+    "district_6",
+    "district_unknown",
+    "station_0",
+    "station_1",
+    "station_2",
+    "station_3",
+    "station_4",
+    "station_5",
+    "station_6",
+    "station_7",
+    "station_8",
+    "station_9",
+    "station_10",
+    "station_11",
+    "station_12",
+    "station_13",
+    "station_14",
+    "station_15",
+    "station_unknown"
+  ],
+  "training_date_utc": "2026-09-26T15:03:46.952212+00:00",
+  "forecast_horizon_hours": 1,
+  "sampling_interval_minutes": 60,
+  "dataset_range": {
+    "train": {
+      "rows": 139889,
+      "first_origin": "2023-01-01 19:00:00",
+      "last_origin": "2024-12-31 22:00:00",
+      "last_target_end": "2024-12-31 23:00:00",
+      "stations": 16
+    },
+    "validation": {
+      "rows": 83125,
+      "first_origin": "2025-01-01 00:00:00",
+      "last_origin": "2025-12-31 22:00:00",
+      "last_target_end": "2025-12-31 23:00:00",
+      "stations": 15
+    },
+    "test": {
+      "rows": 41193,
+      "first_origin": "2026-01-01 00:00:00",
+      "last_origin": "2026-09-20 23:00:00",
+      "last_target_end": "2026-09-21 00:00:00",
+      "stations": 13
+    },
+    "fitted_training": {
+      "rows": 6003,
+      "first_origin": "2023-01-01 19:00:00",
+      "last_origin": "2024-12-31 22:00:00",
+      "last_target_end": "2024-12-31 23:00:00",
+      "stations": 16
+    }
+  },
+  "kernel": "rbf",
+  "C": 10.0,
+  "gamma": "scale",
+  "parameters": {
+    "C": 10.0,
+    "break_ties": false,
+    "cache_size": 128,
+    "class_weight": "balanced",
+    "coef0": 0.0,
+    "decision_function_shape": "ovr",
+    "degree": 3,
+    "gamma": "scale",
+    "kernel": "rbf",
+    "max_iter": -1,
+    "probability": false,
+    "random_state": 42,
+    "shrinking": true,
+    "tol": 0.001,
+    "verbose": false
+  },
+  "class_distribution": [
+    {
+      "split": "train_eligible",
+      "category": "Good",
+      "count": 43735,
+      "fraction": 0.3126407365840059
+    },
+    {
+      "split": "train_eligible",
+      "category": "Satisfactory",
+      "count": 65403,
+      "fraction": 0.4675349741580825
+    },
+    {
+      "split": "train_eligible",
+      "category": "Moderate",
+      "count": 25183,
+      "fraction": 0.18002130260420762
+    },
+    {
+      "split": "train_eligible",
+      "category": "Poor",
+      "count": 4025,
+      "fraction": 0.028772812730093144
+    },
+    {
+      "split": "train_eligible",
+      "category": "Very Poor",
+      "count": 1423,
+      "fraction": 0.010172350935384484
+    },
+    {
+      "split": "train_eligible",
+      "category": "Severe",
+      "count": 120,
+      "fraction": 0.0008578229882263795
+    },
+    {
+      "split": "train_fitted",
+      "category": "Good",
+      "count": 1875,
+      "fraction": 0.312343828085957
+    },
+    {
+      "split": "train_fitted",
+      "category": "Satisfactory",
+      "count": 2805,
+      "fraction": 0.4672663668165917
+    },
+    {
+      "split": "train_fitted",
+      "category": "Moderate",
+      "count": 1080,
+      "fraction": 0.17991004497751126
+    },
+    {
+      "split": "train_fitted",
+      "category": "Poor",
+      "count": 172,
+      "fraction": 0.028652340496418457
+    },
+    {
+      "split": "train_fitted",
+      "category": "Very Poor",
+      "count": 61,
+      "fraction": 0.010161585873729801
+    },
+    {
+      "split": "train_fitted",
+      "category": "Severe",
+      "count": 10,
+      "fraction": 0.0016658337497917708
+    },
+    {
+      "split": "validation",
+      "category": "Good",
+      "count": 24688,
+      "fraction": 0.2969984962406015
+    },
+    {
+      "split": "validation",
+      "category": "Satisfactory",
+      "count": 39590,
+      "fraction": 0.47627067669172934
+    },
+    {
+      "split": "validation",
+      "category": "Moderate",
+      "count": 15713,
+      "fraction": 0.18902857142857143
+    },
+    {
+      "split": "validation",
+      "category": "Poor",
+      "count": 2081,
+      "fraction": 0.025034586466165413
+    },
+    {
+      "split": "validation",
+      "category": "Very Poor",
+      "count": 938,
+      "fraction": 0.011284210526315789
+    },
+    {
+      "split": "validation",
+      "category": "Severe",
+      "count": 115,
+      "fraction": 0.0013834586466165413
+    },
+    {
+      "split": "test",
+      "category": "Good",
+      "count": 9238,
+      "fraction": 0.22426140363654018
+    },
+    {
+      "split": "test",
+      "category": "Satisfactory",
+      "count": 21319,
+      "fraction": 0.5175393877600564
+    },
+    {
+      "split": "test",
+      "category": "Moderate",
+      "count": 8410,
+      "fraction": 0.20416090112397736
+    },
+    {
+      "split": "test",
+      "category": "Poor",
+      "count": 1043,
+      "fraction": 0.025319835894448087
+    },
+    {
+      "split": "test",
+      "category": "Very Poor",
+      "count": 1061,
+      "fraction": 0.025756803340373363
+    },
+    {
+      "split": "test",
+      "category": "Severe",
+      "count": 122,
+      "fraction": 0.0029616682446046657
+    }
+  ],
+  "preprocessing": {
+    "pipeline": "StandardScaler -> SVM; serialized together",
+    "fitted_scaler_rows": 6003,
+    "feature_preprocessing_state": {
+      "target": "pm25",
+      "horizon_hours": 1,
+      "feature_columns": [
+        "hour",
+        "day_of_week",
+        "month",
+        "season",
+        "hour_sin",
+        "hour_cos",
+        "day_of_week_sin",
+        "day_of_week_cos",
+        "month_sin",
+        "month_cos",
+        "pm25_lag_1h",
+        "pm25_lag_3h",
+        "pm25_lag_6h",
+        "pm25_lag_24h",
+        "pm10_lag_1h",
+        "pm10_lag_3h",
+        "pm10_lag_6h",
+        "pm10_lag_24h",
+        "no_lag_1h",
+        "no_lag_3h",
+        "no_lag_6h",
+        "no_lag_24h",
+        "no2_lag_1h",
+        "no2_lag_3h",
+        "no2_lag_6h",
+        "no2_lag_24h",
+        "nox_lag_1h",
+        "nox_lag_3h",
+        "nox_lag_6h",
+        "nox_lag_24h",
+        "nh3_lag_1h",
+        "nh3_lag_3h",
+        "nh3_lag_6h",
+        "nh3_lag_24h",
+        "so2_lag_1h",
+        "so2_lag_3h",
+        "so2_lag_6h",
+        "so2_lag_24h",
+        "co_lag_1h",
+        "co_lag_3h",
+        "co_lag_6h",
+        "co_lag_24h",
+        "o3_lag_1h",
+        "o3_lag_3h",
+        "o3_lag_6h",
+        "o3_lag_24h",
+        "benzene_lag_1h",
+        "benzene_lag_3h",
+        "benzene_lag_6h",
+        "benzene_lag_24h",
+        "toluene_lag_1h",
+        "toluene_lag_3h",
+        "toluene_lag_6h",
+        "toluene_lag_24h",
+        "xylene_lag_1h",
+        "xylene_lag_3h",
+        "xylene_lag_6h",
+        "xylene_lag_24h",
+        "pm25_rolling_mean_3h",
+        "pm25_rolling_min_3h",
+        "pm25_rolling_max_3h",
+        "pm25_rolling_count_3h",
+        "pm25_rolling_mean_6h",
+        "pm25_rolling_min_6h",
+        "pm25_rolling_max_6h",
+        "pm25_rolling_count_6h",
+        "pm25_rolling_mean_12h",
+        "pm25_rolling_min_12h",
+        "pm25_rolling_max_12h",
+        "pm25_rolling_count_12h",
+        "pm25_rolling_mean_24h",
+        "pm25_rolling_min_24h",
+        "pm25_rolling_max_24h",
+        "pm25_rolling_count_24h",
+        "temperature_lag_1h",
+        "relative_humidity_lag_1h",
+        "wind_direction_lag_1h_sin",
+        "wind_direction_lag_1h_cos",
+        "pressure_lag_1h",
+        "solar_radiation_lag_1h",
+        "rainfall_lag_1h",
+        "hour__missing",
+        "day_of_week__missing",
+        "month__missing",
+        "season__missing",
+        "hour_sin__missing",
+        "hour_cos__missing",
+        "day_of_week_sin__missing",
+        "day_of_week_cos__missing",
+        "month_sin__missing",
+        "month_cos__missing",
+        "pm25_lag_1h__missing",
+        "pm25_lag_3h__missing",
+        "pm25_lag_6h__missing",
+        "pm25_lag_24h__missing",
+        "pm10_lag_1h__missing",
+        "pm10_lag_3h__missing",
+        "pm10_lag_6h__missing",
+        "pm10_lag_24h__missing",
+        "no_lag_1h__missing",
+        "no_lag_3h__missing",
+        "no_lag_6h__missing",
+        "no_lag_24h__missing",
+        "no2_lag_1h__missing",
+        "no2_lag_3h__missing",
+        "no2_lag_6h__missing",
+        "no2_lag_24h__missing",
+        "nox_lag_1h__missing",
+        "nox_lag_3h__missing",
+        "nox_lag_6h__missing",
+        "nox_lag_24h__missing",
+        "nh3_lag_1h__missing",
+        "nh3_lag_3h__missing",
+        "nh3_lag_6h__missing",
+        "nh3_lag_24h__missing",
+        "so2_lag_1h__missing",
+        "so2_lag_3h__missing",
+        "so2_lag_6h__missing",
+        "so2_lag_24h__missing",
+        "co_lag_1h__missing",
+        "co_lag_3h__missing",
+        "co_lag_6h__missing",
+        "co_lag_24h__missing",
+        "o3_lag_1h__missing",
+        "o3_lag_3h__missing",
+        "o3_lag_6h__missing",
+        "o3_lag_24h__missing",
+        "benzene_lag_1h__missing",
+        "benzene_lag_3h__missing",
+        "benzene_lag_6h__missing",
+        "benzene_lag_24h__missing",
+        "toluene_lag_1h__missing",
+        "toluene_lag_3h__missing",
+        "toluene_lag_6h__missing",
+        "toluene_lag_24h__missing",
+        "xylene_lag_1h__missing",
+        "xylene_lag_3h__missing",
+        "xylene_lag_6h__missing",
+        "xylene_lag_24h__missing",
+        "pm25_rolling_mean_3h__missing",
+        "pm25_rolling_min_3h__missing",
+        "pm25_rolling_max_3h__missing",
+        "pm25_rolling_count_3h__missing",
+        "pm25_rolling_mean_6h__missing",
+        "pm25_rolling_min_6h__missing",
+        "pm25_rolling_max_6h__missing",
+        "pm25_rolling_count_6h__missing",
+        "pm25_rolling_mean_12h__missing",
+        "pm25_rolling_min_12h__missing",
+        "pm25_rolling_max_12h__missing",
+        "pm25_rolling_count_12h__missing",
+        "pm25_rolling_mean_24h__missing",
+        "pm25_rolling_min_24h__missing",
+        "pm25_rolling_max_24h__missing",
+        "pm25_rolling_count_24h__missing",
+        "temperature_lag_1h__missing",
+        "relative_humidity_lag_1h__missing",
+        "wind_direction_lag_1h_sin__missing",
+        "wind_direction_lag_1h_cos__missing",
+        "pressure_lag_1h__missing",
+        "solar_radiation_lag_1h__missing",
+        "rainfall_lag_1h__missing",
+        "district_0",
+        "district_1",
+        "district_2",
+        "district_3",
+        "district_4",
+        "district_5",
+        "district_6",
+        "district_unknown",
+        "station_0",
+        "station_1",
+        "station_2",
+        "station_3",
+        "station_4",
+        "station_5",
+        "station_6",
+        "station_7",
+        "station_8",
+        "station_9",
+        "station_10",
+        "station_11",
+        "station_12",
+        "station_13",
+        "station_14",
+        "station_15",
+        "station_unknown"
+      ],
+      "numeric_medians": {
+        "hour": 12.0,
+        "day_of_week": 3.0,
+        "month": 7.0,
+        "season": 1.0,
+        "hour_sin": 1.2246467991473532e-16,
+        "hour_cos": -1.8369701987210297e-16,
+        "day_of_week_sin": 0.0,
+        "day_of_week_cos": -0.22252093395631434,
+        "month_sin": 0.0,
+        "month_cos": 6.123233995736766e-17,
+        "pm25_lag_1h": 24.25,
+        "pm25_lag_3h": 24.25,
+        "pm25_lag_6h": 24.25,
+        "pm25_lag_24h": 24.08,
+        "pm10_lag_1h": 58.25,
+        "pm10_lag_3h": 58.25,
+        "pm10_lag_6h": 58.0,
+        "pm10_lag_24h": 58.01,
+        "no_lag_1h": 3.75,
+        "no_lag_3h": 3.75,
+        "no_lag_6h": 3.75,
+        "no_lag_24h": 3.75,
+        "no2_lag_1h": 10.625,
+        "no2_lag_3h": 10.575,
+        "no2_lag_6h": 10.55,
+        "no2_lag_24h": 10.68,
+        "nox_lag_1h": 10.286249999999999,
+        "nox_lag_3h": 10.25,
+        "nox_lag_6h": 10.25,
+        "nox_lag_24h": 10.36,
+        "nh3_lag_1h": 12.15,
+        "nh3_lag_3h": 12.18,
+        "nh3_lag_6h": 12.2,
+        "nh3_lag_24h": 12.225,
+        "so2_lag_1h": 6.5,
+        "so2_lag_3h": 6.5,
+        "so2_lag_6h": 6.5,
+        "so2_lag_24h": 6.5,
+        "co_lag_1h": 0.105,
+        "co_lag_3h": 0.11,
+        "co_lag_6h": 0.11,
+        "co_lag_24h": 0.1275,
+        "o3_lag_1h": 8.75,
+        "o3_lag_3h": 8.75,
+        "o3_lag_6h": 8.75,
+        "o3_lag_24h": 8.75,
+        "benzene_lag_1h": 0.6749999999999999,
+        "benzene_lag_3h": 0.6749999999999999,
+        "benzene_lag_6h": 0.6749999999999999,
+        "benzene_lag_24h": 0.6749999999999999,
+        "toluene_lag_1h": 2.0,
+        "toluene_lag_3h": 2.0,
+        "toluene_lag_6h": 2.0,
+        "toluene_lag_24h": 2.0,
+        "xylene_lag_1h": 0.0,
+        "xylene_lag_3h": 0.0,
+        "xylene_lag_6h": 0.0,
+        "xylene_lag_24h": 0.0,
+        "pm25_rolling_mean_3h": 24.666666666666668,
+        "pm25_rolling_min_3h": 20.405,
+        "pm25_rolling_max_3h": 28.63,
+        "pm25_rolling_count_3h": 3.0,
+        "pm25_rolling_mean_6h": 25.416666666666668,
+        "pm25_rolling_min_6h": 17.5,
+        "pm25_rolling_max_6h": 33.75,
+        "pm25_rolling_count_6h": 6.0,
+        "pm25_rolling_mean_12h": 26.8125,
+        "pm25_rolling_min_12h": 14.66,
+        "pm25_rolling_max_12h": 41.75,
+        "pm25_rolling_count_12h": 12.0,
+        "pm25_rolling_mean_24h": 29.739583333333332,
+        "pm25_rolling_min_24h": 12.25,
+        "pm25_rolling_max_24h": 55.5,
+        "pm25_rolling_count_24h": 23.0,
+        "temperature_lag_1h": 29.0,
+        "relative_humidity_lag_1h": 73.75,
+        "wind_direction_lag_1h_sin": -0.254601948205527,
+        "wind_direction_lag_1h_cos": -0.3502073812594676,
+        "pressure_lag_1h": 762.5,
+        "solar_radiation_lag_1h": 26.75,
+        "rainfall_lag_1h": 0.0
+      },
+      "location_vocabulary": {
+        "district": [
+          "Ariyalur",
+          "Chengalpattu",
+          "Chennai",
+          "Coimbatore",
+          "Cuddalore",
+          "Dindigul",
+          "Gummidipundi"
+        ],
+        "station": [
+          [
+            "Ariyalur",
+            "Keelapalur"
+          ],
+          [
+            "Chengalpattu",
+            "Crescent University, Chengalpattu - Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Alandur,Chennai-Cpcb"
+          ],
+          [
+            "Chennai",
+            "Arumbakkam,Chennai-Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Gandhi-Ennore-Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Kodugaiyur-Chennai-Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Manali Village,Chennai-Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Manali-Chennai-Cpcb"
+          ],
+          [
+            "Chennai",
+            "Perungudi-Chennai-Tnpcb"
+          ],
+          [
+            "Chennai",
+            "Royapuram, Chennai - Tnpcb"
+          ],
+          [
+            "Coimbatore",
+            "Psg Arts And Science"
+          ],
+          [
+            "Coimbatore",
+            "Sidco Kurichi"
+          ],
+          [
+            "Cuddalore",
+            "Kudikadu"
+          ],
+          [
+            "Cuddalore",
+            "Semmandalam"
+          ],
+          [
+            "Dindigul",
+            "Mendonsa Colony"
+          ],
+          [
+            "Gummidipundi",
+            "Anthoni Pillai Nagar"
+          ]
+        ]
+      },
+      "dropped_training_empty_features": []
+    },
+    "feature_state_sha256": "9b84e726799fff58b9962dc2aeaaf5d8d118c237b6184eb6a246d7f4ae74eca2"
+  },
+  "evaluation_results": {
+    "validation": {
+      "accuracy": 0.749593984962406,
+      "macro_precision": 0.6236890135500454,
+      "macro_recall": 0.5141330444251905,
+      "macro_f1": 0.5467546538551497,
+      "weighted_f1": 0.7470578752052668,
+      "per_class": [
+        {
+          "category": "Good",
+          "precision": 0.7325684651724506,
+          "recall": 0.8353856124432922,
+          "f1": 0.780605968849946,
+          "support": 24688
+        },
+        {
+          "category": "Satisfactory",
+          "precision": 0.7898075417712636,
+          "recall": 0.7390755241222531,
+          "f1": 0.7635998277594374,
+          "support": 39590
+        },
+        {
+          "category": "Moderate",
+          "precision": 0.6917167461743386,
+          "recall": 0.7105581365748107,
+          "f1": 0.7010108620581402,
+          "support": 15713
+        },
+        {
+          "category": "Poor",
+          "precision": 0.6638115631691649,
+          "recall": 0.44690052859202306,
+          "f1": 0.5341757610568638,
+          "support": 2081
+        },
+        {
+          "category": "Very Poor",
+          "precision": 0.8642297650130548,
+          "recall": 0.35287846481876334,
+          "f1": 0.5011355034065103,
+          "support": 938
+        },
+        {
+          "category": "Severe",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 115
+        }
+      ],
+      "confusion_matrix": [
+        [
+          20624,
+          3825,
+          239,
+          0,
+          0,
+          0
+        ],
+        [
+          6947,
+          29260,
+          3366,
+          16,
+          1,
+          0
+        ],
+        [
+          560,
+          3878,
+          11165,
+          102,
+          8,
+          0
+        ],
+        [
+          9,
+          60,
+          1039,
+          930,
+          43,
+          0
+        ],
+        [
+          3,
+          14,
+          240,
+          350,
+          331,
+          0
+        ],
+        [
+          10,
+          10,
+          92,
+          3,
+          0,
+          0
+        ]
+      ],
+      "averaging": "Macro across all six engine categories, including absent classes with zero_division=0; weighted by actual support"
+    },
+    "test": {
+      "accuracy": 0.746753089117083,
+      "macro_precision": 0.5736985006402343,
+      "macro_recall": 0.47353651247832773,
+      "macro_f1": 0.487211043961366,
+      "weighted_f1": 0.7407521987416134,
+      "per_class": [
+        {
+          "category": "Good",
+          "precision": 0.6805045655652828,
+          "recall": 0.7825286858627408,
+          "f1": 0.7279593172549217,
+          "support": 9238
+        },
+        {
+          "category": "Satisfactory",
+          "precision": 0.8293313069908814,
+          "recall": 0.7679065622214926,
+          "f1": 0.7974378333617478,
+          "support": 21319
+        },
+        {
+          "category": "Moderate",
+          "precision": 0.6671694318753142,
+          "recall": 0.7889417360285375,
+          "f1": 0.7229637700898938,
+          "support": 8410
+        },
+        {
+          "category": "Poor",
+          "precision": 0.5582089552238806,
+          "recall": 0.3585810162991371,
+          "f1": 0.4366608289550496,
+          "support": 1043
+        },
+        {
+          "category": "Very Poor",
+          "precision": 0.7069767441860465,
+          "recall": 0.14326107445805844,
+          "f1": 0.23824451410658307,
+          "support": 1061
+        },
+        {
+          "category": "Severe",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 122
+        }
+      ],
+      "confusion_matrix": [
+        [
+          7229,
+          1861,
+          148,
+          0,
+          0,
+          0
+        ],
+        [
+          3107,
+          16371,
+          1838,
+          3,
+          0,
+          0
+        ],
+        [
+          268,
+          1458,
+          6635,
+          49,
+          0,
+          0
+        ],
+        [
+          6,
+          18,
+          586,
+          374,
+          59,
+          0
+        ],
+        [
+          8,
+          15,
+          642,
+          244,
+          152,
+          0
+        ],
+        [
+          5,
+          17,
+          96,
+          0,
+          4,
+          0
+        ]
+      ],
+      "averaging": "Macro across all six engine categories, including absent classes with zero_division=0; weighted by actual support"
+    },
+    "majority_test": {
+      "accuracy": 0.5175393877600564,
+      "macro_precision": 0.08625656462667607,
+      "macro_recall": 0.16666666666666666,
+      "macro_f1": 0.11367950686801469,
+      "weighted_f1": 0.3530017343120246,
+      "per_class": [
+        {
+          "category": "Good",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 9238
+        },
+        {
+          "category": "Satisfactory",
+          "precision": 0.5175393877600564,
+          "recall": 1.0,
+          "f1": 0.6820770412080881,
+          "support": 21319
+        },
+        {
+          "category": "Moderate",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 8410
+        },
+        {
+          "category": "Poor",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1043
+        },
+        {
+          "category": "Very Poor",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1061
+        },
+        {
+          "category": "Severe",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 122
+        }
+      ],
+      "confusion_matrix": [
+        [
+          0,
+          9238,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          21319,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          8410,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1043,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1061,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          122,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "averaging": "Macro across all six engine categories, including absent classes with zero_division=0; weighted by actual support"
+    },
+    "past_category_test": {
+      "accuracy": 0.9303036923749181,
+      "macro_precision": 0.8896196707420904,
+      "macro_recall": 0.8815092594515462,
+      "macro_f1": 0.8851084513635592,
+      "weighted_f1": 0.9301567562324581,
+      "per_class": [
+        {
+          "category": "Good",
+          "precision": 0.9344031226282121,
+          "recall": 0.9328859060402684,
+          "f1": 0.9336438979470234,
+          "support": 9238
+        },
+        {
+          "category": "Satisfactory",
+          "precision": 0.9423444418550454,
+          "recall": 0.94835592663821,
+          "f1": 0.9453406274839856,
+          "support": 21319
+        },
+        {
+          "category": "Moderate",
+          "precision": 0.9213255453570152,
+          "recall": 0.919024970273484,
+          "f1": 0.9201738198702304,
+          "support": 8410
+        },
+        {
+          "category": "Poor",
+          "precision": 0.769377990430622,
+          "recall": 0.7708533077660594,
+          "f1": 0.7701149425287356,
+          "support": 1043
+        },
+        {
+          "category": "Very Poor",
+          "precision": 0.8805031446540881,
+          "recall": 0.7917059377945335,
+          "f1": 0.8337468982630273,
+          "support": 1061
+        },
+        {
+          "category": "Severe",
+          "precision": 0.889763779527559,
+          "recall": 0.9262295081967213,
+          "f1": 0.9076305220883534,
+          "support": 122
+        }
+      ],
+      "confusion_matrix": [
+        [
+          8618,
+          598,
+          18,
+          0,
+          4,
+          0
+        ],
+        [
+          577,
+          20218,
+          511,
+          6,
+          7,
+          0
+        ],
+        [
+          7,
+          486,
+          7729,
+          177,
+          11,
+          0
+        ],
+        [
+          0,
+          73,
+          83,
+          804,
+          83,
+          0
+        ],
+        [
+          21,
+          80,
+          48,
+          58,
+          840,
+          14
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          9,
+          113
+        ]
+      ],
+      "averaging": "Macro across all six engine categories, including absent classes with zero_division=0; weighted by actual support"
+    }
+  },
+  "training_seconds": 1.6796727999999348,
+  "prediction_seconds": 19.595145699999875,
+  "probabilities_enabled": false,
+  "calibrated_confidence_available": false,
+  "model_sha256": "a0bd74a64befb977bf5d733f98819f2d2f9f441ecbe90bd3b6aeea86fdc8594d",
+  "source_fingerprint": {
+    "files": 124,
+    "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+  },
+  "label_summary": {
+    "methodology": "CPCB-Table3.11-conservative-v1",
+    "source_before": {
+      "files": 124,
+      "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+    },
+    "source_after": {
+      "files": 124,
+      "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+    },
+    "candidate_records": 372913,
+    "successfully_labelled": 313937,
+    "numeric_aqi_records": 313521,
+    "unlabelled": 58976,
+    "category_distribution": {
+      "Good": 99809,
+      "Satisfactory": 145725,
+      "Moderate": 56480,
+      "Poor": 7697,
+      "Very Poor": 3810,
+      "Severe": 416
+    },
+    "unlabelled_statuses": {
+      "insufficient_pollutants": 58758,
+      "unresolved_ozone": 218
+    },
+    "pollutant_exclusion_counts": {
+      "fewer_than_16_complete_hours": 280529,
+      "missing": 373110,
+      "incomplete_latest_8_hours": 119706,
+      "high_8_hour_ozone_without_applicable_1_hour_band": 220
+    },
+    "compatibility": {
+      "pm25": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      },
+      "pm10": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      },
+      "no2": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      },
+      "so2": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      },
+      "co": {
+        "source_unit": "mg/m3",
+        "canonical_unit": "mg/m3",
+        "conversion_factor": 1.0
+      },
+      "o3": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      },
+      "nh3": {
+        "source_unit": "ug/m3",
+        "canonical_unit": "ug/m3",
+        "conversion_factor": 1.0
+      }
+    },
+    "conversion_count": 0,
+    "source_hourly_sha256": "bb212a232682a972fdddfed70c44fecabafc30c0daeefafad41b80c1f1b5707b",
+    "labels_sha256": "635a49c0608bd8249ff2f77cdae937cd279b4ec5ffceb3ae63b7ba0c7680edad",
+    "registry_sha256": "7fbd3cd4743e416a2092e46c976b7d3cde9b6f5d680a27cb14d9b1bfbc554c8a",
+    "evidence_sha256": "cfe71e829390471613ea7569ab988df6313f7337c34cc4771da39462e6f40d12",
+    "scope": "Observed hourly interval ends, not every native raw row; absent hours are not synthesized"
+  },
+  "unit_registry_sha256": "7fbd3cd4743e416a2092e46c976b7d3cde9b6f5d680a27cb14d9b1bfbc554c8a",
+  "feature_dataset_sha256": "f8767f172397d572d02f44b354a5d1cb710a28593e61004b7374c9e80aabadd7",
+  "feature_rows_without_valid_category": 2357,
+  "stations": [
+    {
+      "district": "Ariyalur",
+      "port": "Keelapalur"
+    },
+    {
+      "district": "Chennai",
+      "port": "Alandur,Chennai-Cpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Manali-Chennai-Cpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Perungudi-Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Royapuram, Chennai - Tnpcb"
+    },
+    {
+      "district": "Dindigul",
+      "port": "Mendonsa Colony"
+    },
+    {
+      "district": "Gummidipundi",
+      "port": "Anthoni Pillai Nagar"
+    },
+    {
+      "district": "Chennai",
+      "port": "Arumbakkam,Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Kodugaiyur-Chennai-Tnpcb"
+    },
+    {
+      "district": "Coimbatore",
+      "port": "Sidco Kurichi"
+    },
+    {
+      "district": "Chennai",
+      "port": "Gandhi-Ennore-Tnpcb"
+    },
+    {
+      "district": "Chengalpattu",
+      "port": "Crescent University, Chengalpattu - Tnpcb"
+    },
+    {
+      "district": "Cuddalore",
+      "port": "Kudikadu"
+    },
+    {
+      "district": "Cuddalore",
+      "port": "Semmandalam"
+    },
+    {
+      "district": "Coimbatore",
+      "port": "Psg Arts And Science"
+    },
+    {
+      "district": "Chennai",
+      "port": "Manali Village,Chennai-Tnpcb"
+    }
+  ],
+  "protocol": {
+    "target": "AQI category at window_end = forecast_origin + 1 hour",
+    "features": [
+      "hour",
+      "day_of_week",
+      "month",
+      "season",
+      "hour_sin",
+      "hour_cos",
+      "day_of_week_sin",
+      "day_of_week_cos",
+      "month_sin",
+      "month_cos",
+      "pm25_lag_1h",
+      "pm25_lag_3h",
+      "pm25_lag_6h",
+      "pm25_lag_24h",
+      "pm10_lag_1h",
+      "pm10_lag_3h",
+      "pm10_lag_6h",
+      "pm10_lag_24h",
+      "no_lag_1h",
+      "no_lag_3h",
+      "no_lag_6h",
+      "no_lag_24h",
+      "no2_lag_1h",
+      "no2_lag_3h",
+      "no2_lag_6h",
+      "no2_lag_24h",
+      "nh3_lag_1h",
+      "nh3_lag_3h",
+      "nh3_lag_6h",
+      "nh3_lag_24h",
+      "so2_lag_1h",
+      "so2_lag_3h",
+      "so2_lag_6h",
+      "so2_lag_24h",
+      "co_lag_1h",
+      "co_lag_3h",
+      "co_lag_6h",
+      "co_lag_24h",
+      "o3_lag_1h",
+      "o3_lag_3h",
+      "o3_lag_6h",
+      "o3_lag_24h",
+      "pm25_rolling_mean_3h",
+      "pm25_rolling_min_3h",
+      "pm25_rolling_max_3h",
+      "pm25_rolling_count_3h",
+      "pm25_rolling_mean_6h",
+      "pm25_rolling_min_6h",
+      "pm25_rolling_max_6h",
+      "pm25_rolling_count_6h",
+      "pm25_rolling_mean_12h",
+      "pm25_rolling_min_12h",
+      "pm25_rolling_max_12h",
+      "pm25_rolling_count_12h",
+      "pm25_rolling_mean_24h",
+      "pm25_rolling_min_24h",
+      "pm25_rolling_max_24h",
+      "pm25_rolling_count_24h",
+      "temperature_lag_1h",
+      "relative_humidity_lag_1h",
+      "wind_direction_lag_1h_sin",
+      "wind_direction_lag_1h_cos",
+      "pressure_lag_1h",
+      "solar_radiation_lag_1h",
+      "rainfall_lag_1h",
+      "hour__missing",
+      "day_of_week__missing",
+      "month__missing",
+      "season__missing",
+      "hour_sin__missing",
+      "hour_cos__missing",
+      "day_of_week_sin__missing",
+      "day_of_week_cos__missing",
+      "month_sin__missing",
+      "month_cos__missing",
+      "pm25_lag_1h__missing",
+      "pm25_lag_3h__missing",
+      "pm25_lag_6h__missing",
+      "pm25_lag_24h__missing",
+      "pm10_lag_1h__missing",
+      "pm10_lag_3h__missing",
+      "pm10_lag_6h__missing",
+      "pm10_lag_24h__missing",
+      "no_lag_1h__missing",
+      "no_lag_3h__missing",
+      "no_lag_6h__missing",
+      "no_lag_24h__missing",
+      "no2_lag_1h__missing",
+      "no2_lag_3h__missing",
+      "no2_lag_6h__missing",
+      "no2_lag_24h__missing",
+      "nh3_lag_1h__missing",
+      "nh3_lag_3h__missing",
+      "nh3_lag_6h__missing",
+      "nh3_lag_24h__missing",
+      "so2_lag_1h__missing",
+      "so2_lag_3h__missing",
+      "so2_lag_6h__missing",
+      "so2_lag_24h__missing",
+      "co_lag_1h__missing",
+      "co_lag_3h__missing",
+      "co_lag_6h__missing",
+      "co_lag_24h__missing",
+      "o3_lag_1h__missing",
+      "o3_lag_3h__missing",
+      "o3_lag_6h__missing",
+      "o3_lag_24h__missing",
+      "pm25_rolling_mean_3h__missing",
+      "pm25_rolling_min_3h__missing",
+      "pm25_rolling_max_3h__missing",
+      "pm25_rolling_count_3h__missing",
+      "pm25_rolling_mean_6h__missing",
+      "pm25_rolling_min_6h__missing",
+      "pm25_rolling_max_6h__missing",
+      "pm25_rolling_count_6h__missing",
+      "pm25_rolling_mean_12h__missing",
+      "pm25_rolling_min_12h__missing",
+      "pm25_rolling_max_12h__missing",
+      "pm25_rolling_count_12h__missing",
+      "pm25_rolling_mean_24h__missing",
+      "pm25_rolling_min_24h__missing",
+      "pm25_rolling_max_24h__missing",
+      "pm25_rolling_count_24h__missing",
+      "temperature_lag_1h__missing",
+      "relative_humidity_lag_1h__missing",
+      "wind_direction_lag_1h_sin__missing",
+      "wind_direction_lag_1h_cos__missing",
+      "pressure_lag_1h__missing",
+      "solar_radiation_lag_1h__missing",
+      "rainfall_lag_1h__missing",
+      "district_0",
+      "district_1",
+      "district_2",
+      "district_3",
+      "district_4",
+      "district_5",
+      "district_6",
+      "district_unknown",
+      "station_0",
+      "station_1",
+      "station_2",
+      "station_3",
+      "station_4",
+      "station_5",
+      "station_6",
+      "station_7",
+      "station_8",
+      "station_9",
+      "station_10",
+      "station_11",
+      "station_12",
+      "station_13",
+      "station_14",
+      "station_15",
+      "station_unknown"
+    ],
+    "horizon_hours": 1,
+    "measurement_cutoff": "all observations end strictly before origin t; latest end t-1h",
+    "target_window": "[t-23h,t+1h), with engine-specific pollutant averaging and coverage",
+    "split": {
+      "train": "2023\u20132024",
+      "validation": "2025",
+      "test": "2026; retrospective reused period"
+    },
+    "selection": "Highest validation macro F1 over all six classes; then accuracy; then candidate id",
+    "training_cap": 6000,
+    "sampling": "Deterministic proportional within-class time-spread, preserve up to 10 rare examples; no duplication; sorted chronologically",
+    "candidates": [
+      [
+        "linear_C0.1",
+        "linear",
+        0.1,
+        "scale"
+      ],
+      [
+        "linear_C1",
+        "linear",
+        1.0,
+        "scale"
+      ],
+      [
+        "rbf_C1",
+        "rbf",
+        1.0,
+        "scale"
+      ],
+      [
+        "rbf_C10",
+        "rbf",
+        10.0,
+        "scale"
+      ]
+    ],
+    "probabilities": false,
+    "test_access": "Class support audited before training; no test prediction/metric until selection lock",
+    "feature_preprocessing": "Reuse Phase 6 train-only medians/one-hot vocabulary, then fit StandardScaler on fitted training rows only",
+    "source_fingerprint": {
+      "files": 124,
+      "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+    },
+    "labels_sha256": "635a49c0608bd8249ff2f77cdae937cd279b4ec5ffceb3ae63b7ba0c7680edad"
+  },
+  "limitations": "Source website identity/scope is user-attested. Overlapping AQI windows are autocorrelated. Historical 2026 period was used in prior regression phases; retrospective, not a new blind holdout. Predictions are not observed AQI."
+}

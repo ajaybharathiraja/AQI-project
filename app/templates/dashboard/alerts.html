@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Pollution Alerts - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-bell text-danger me-2"></i>Pollution Alerts & Warnings</h2>
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        {% if alerts %}
+            <div class="alert alert-danger fw-bold d-flex align-items-center" role="alert">
+                <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                <div>
+                    <div>High Pollution Levels Detected!</div>
+                    <small class="fw-normal">The system has identified stations exceeding safe PM2.5 thresholds (>150 µg/m³).</small>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                {% for record, station in alerts %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-danger border-2 rounded-4 h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark">{{ station.station_name }}</h5>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt text-danger me-1"></i>{{ station.city }}</small>
+                                </div>
+                                <span class="badge bg-danger fs-6 rounded-pill px-3 py-2"><i class="fas fa-biohazard me-1"></i>Hazardous</span>
+                            </div>
+                            
+                            <hr class="text-muted opacity-25">
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-muted mb-1 fs-sm text-uppercase fw-bold">PM2.5 Level</h6>
+                                    <h3 class="fw-bold text-danger mb-0">{{ record.pm25 }} <small class="fs-6 text-muted">µg/m³</small></h3>
+                                </div>
+                                <div class="text-end">
+                                    <h6 class="text-muted mb-1 fs-sm text-uppercase fw-bold">Recorded On</h6>
+                                    <span class="text-dark fw-bold">{{ record.timestamp.strftime('%d %b %Y, %H:%M') }}</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card shadow-sm border-0 rounded-4 bg-light">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center p-5 text-center">
+                    <i class="fas fa-shield-alt fa-5x text-success mb-4 opacity-75"></i>
+                    <h3 class="fw-bold text-success">All Clear!</h3>
+                    <p class="text-muted max-w-75">There are no active pollution alerts. All monitoring stations are currently reporting PM2.5 levels within safe environmental limits.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

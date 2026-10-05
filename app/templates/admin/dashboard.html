@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-shield-alt text-danger me-2"></i>Admin Dashboard</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- User Management Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card bg-primary text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">User Management</h6>
+                        <h2 class="mb-0 fw-bold">{{ total_users }} Users</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('admin.users') }}" class="card-footer bg-primary text-white text-decoration-none border-0 text-center rounded-bottom-4 py-2 border-top border-light border-opacity-25 hover-bg-darken">
+                Manage Users <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Dataset Upload Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card bg-info text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">Dataset Upload</h6>
+                        <h2 class="mb-0 fw-bold">{{ total_records }} Records</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-database fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('admin.datasets') }}" class="card-footer bg-info text-white text-decoration-none border-0 text-center rounded-bottom-4 py-2 border-top border-light border-opacity-25 hover-bg-darken">
+                Upload Data <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Messages Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card bg-danger text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">Alert Messages</h6>
+                        <h2 class="mb-0 fw-bold">System Alerts</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('admin.alerts') }}" class="card-footer bg-danger text-white text-decoration-none border-0 text-center rounded-bottom-4 py-2 border-top border-light border-opacity-25 hover-bg-darken">
+                View Alerts <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-bg-darken:hover { filter: brightness(90%); }
+</style>
+{% endblock %}

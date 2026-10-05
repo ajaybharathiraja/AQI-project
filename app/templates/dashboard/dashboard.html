@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-chart-line text-primary me-2"></i>Dashboard Overview</h2>
+            <p class="text-muted mb-0">Welcome back, <strong>{{ current_user.name }}</strong></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Stat Cards Placeholder -->
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Cities</h6>
+                        <h2 class="mb-0 fw-bold">7</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-city fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Stations</h6>
+                        <h2 class="mb-0 fw-bold">16</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-broadcast-tower fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-dark shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-dark-50 text-uppercase fw-bold mb-2">Total Records</h6>
+                        <h2 class="mb-0 fw-bold">1M+</h2>
+                    </div>
+                    <div class="bg-dark bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-database fa-2x text-dark"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card bg-danger text-white shadow rounded-4 border-0 h-100">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 text-uppercase fw-bold mb-2">Active Alerts</h6>
+                        <h2 class="mb-0 fw-bold">0</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 p-3 rounded-circle">
+                        <i class="fas fa-bell fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                <h5 class="fw-bold mb-0">Platform Modules</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.eda') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
+                                <i class="fas fa-chart-pie fa-3x text-primary mb-3"></i>
+                                <h5 class="fw-bold">Exploratory Data Analysis</h5>
+                                <p class="text-muted small">Analyze pollutant parameters, correlations, and distributions.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.map_view') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
+                                <i class="fas fa-map-marked-alt fa-3x text-success mb-3"></i>
+                                <h5 class="fw-bold">Pollution Hotspots</h5>
+                                <p class="text-muted small">View geospatial distribution of AQI and pollutant concentrations.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('forecast.index') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
+                                <i class="fas fa-brain fa-3x text-info mb-3"></i>
+                                <h5 class="fw-bold">Future Forecasting</h5>
+                                <p class="text-muted small">Predict and forecast future AQI using Random Forest, SVM, XGBoost, and LSTM.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Second Row of Cards -->
+                <div class="row g-4 mt-1">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.alerts') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer border-danger" style="border-width: 2px !important;">
+                                <i class="fas fa-bell fa-3x text-danger mb-3"></i>
+                                <h5 class="fw-bold">Pollution Alerts</h5>
+                                <p class="text-muted small">Real-time monitoring and threshold alerts for hazardous AQI events.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.calculator') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
+                                <i class="fas fa-calculator fa-3x text-warning mb-3"></i>
+                                <h5 class="fw-bold">Live AQI Evaluator</h5>
+                                <p class="text-muted small">Input raw pollutant values to instantly calculate and evaluate the AQI score.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.live') }}" class="text-decoration-none text-dark">
+                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer border-success" style="border-width: 2px !important;">
+                                <i class="fas fa-satellite-dish fa-3x text-success mb-3 blink"></i>
+                                <h5 class="fw-bold">Real-Time Data</h5>
+                                <p class="text-muted small">View live sensor feeds continuously updating from the CSV server database.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; border-color: #0d6efd !important; }
+    .transition-all { transition: all 0.2s ease-in-out; }
+    .cursor-pointer { cursor: pointer; }
+    @keyframes blinker { 50% { opacity: 0; } }
+    .blink { animation: blinker 1.5s linear infinite; }
+</style>
+{% endblock %}

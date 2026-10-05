@@ -1,0 +1,3 @@
+# Install the ML requirements first; CPU wheels are available at
+# https://download.pytorch.org/whl/cpu . Use a separate environment/runtime.
+torch==2.14.0+cpu

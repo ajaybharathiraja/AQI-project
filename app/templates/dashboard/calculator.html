@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Live AQI Evaluator - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-calculator text-warning me-2"></i>Live AQI Evaluator</h2>
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 pb-0 border-0">
+                <h5 class="fw-bold">Input Parameters</h5>
+                <p class="text-muted small mb-0">Enter the raw pollutant values (or use the sample button) to calculate the final AQI.</p>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('dashboard.calculator') }}" id="calcForm">
+                    <div class="row g-3" id="pollutant-container">
+                        <div class="col-md-6 pollutant-field" data-gas="pm25">
+                            <label class="form-label fw-bold small d-flex justify-content-between">PM2.5 (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="pm25" id="in_pm25" class="form-control" value="{{ result.pm25 if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="pm10">
+                            <label class="form-label fw-bold small d-flex justify-content-between">PM10 (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="pm10" id="in_pm10" class="form-control" value="{{ result.pm10 if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="no2">
+                            <label class="form-label fw-bold small d-flex justify-content-between">NO2 (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="no2" id="in_no2" class="form-control" value="{{ result.no2 if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="so2">
+                            <label class="form-label fw-bold small d-flex justify-content-between">SO2 (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="so2" id="in_so2" class="form-control" value="{{ result.so2 if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="co">
+                            <label class="form-label fw-bold small d-flex justify-content-between">CO (mg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="co" id="in_co" class="form-control" value="{{ result.co if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="ozone">
+                            <label class="form-label fw-bold small d-flex justify-content-between">Ozone (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="ozone" id="in_ozone" class="form-control" value="{{ result.ozone if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="nh3">
+                            <label class="form-label fw-bold small d-flex justify-content-between">NH3 (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="nh3" id="in_nh3" class="form-control" value="{{ result.nh3 if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field" data-gas="pb">
+                            <label class="form-label fw-bold small d-flex justify-content-between">Lead - Pb (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="pb" id="in_pb" class="form-control" value="{{ result.pb if result else '' }}">
+                        </div>
+                        <div class="col-md-6 pollutant-field d-none" data-gas="co2">
+                            <label class="form-label fw-bold small d-flex justify-content-between">CO2 (ppm) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="co2" id="in_co2" class="form-control" value="{{ result.co2 if result else '' }}" disabled>
+                        </div>
+                        <div class="col-md-6 pollutant-field d-none" data-gas="voc">
+                            <label class="form-label fw-bold small d-flex justify-content-between">VOC (µg/m³) <i class="fas fa-times text-danger cursor-pointer remove-gas" title="Remove"></i></label>
+                            <input type="number" step="0.01" name="voc" id="in_voc" class="form-control" value="{{ result.voc if result else '' }}" disabled>
+                        </div>
+                    </div>
+                    
+                    <div id="addGasSection" class="mt-3 d-none">
+                        <div class="input-group input-group-sm w-50">
+                            <select id="addGasSelect" class="form-select">
+                                <option value="">Select Pollutant...</option>
+                                {% if not result or not result.co2 %}<option value="co2">CO2 (ppm)</option>{% endif %}
+                                {% if not result or not result.voc %}<option value="voc">VOC (µg/m³)</option>{% endif %}
+                            </select>
+                            <button type="button" id="addGasBtn" class="btn btn-primary"><i class="fas fa-plus me-1"></i>Add Gas</button>
+                        </div>
+                    </div>
+                    
+                    <div id="gasRecommendation" class="mt-2 text-warning small fw-bold d-none">
+                        <i class="fas fa-exclamation-triangle me-1"></i>Recommendation: PM2.5 or PM10 should be included for a reliable AQI.
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning fw-bold hover-lift transition-all">Calculate AQI</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="fillSample()">Fill Sample Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7 mb-4">
+        <div class="card shadow border-0 rounded-4 h-100 bg-light">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center p-5">
+                {% if result %}
+                    <h6 class="text-uppercase text-muted fw-bold mb-3">Calculation Result</h6>
+                    
+                    {% set aqi_color = '#198754' %}
+                    {% if result.aqi > 50 %}{% set aqi_color = '#ffc107' %}{% endif %}
+                    {% if result.aqi > 100 %}{% set aqi_color = '#fd7e14' %}{% endif %}
+                    {% if result.aqi > 200 %}{% set aqi_color = '#dc3545' %}{% endif %}
+                    {% if result.aqi > 300 %}{% set aqi_color = '#212529' %}{% endif %}
+                    
+                    {% set style_attr = 'style="--val: ' ~ (result.aqi/4) ~ '; width: 220px; height: 220px; background: conic-gradient(' ~ aqi_color ~ ' calc(var(--val) * 1%), #e9ecef 0); border: 8px solid white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);"' %}
+                    <div class="text-center p-4 rounded-circle mb-4" {{ style_attr | safe }}>
+                        <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
+                            <h1 class="display-3 fw-bold text-dark mb-0">{{ result.aqi }}</h1>
+                            {% set text_color = 'style="color: ' ~ aqi_color ~ ';"' %}
+                            <span class="fw-bold fs-5" {{ text_color | safe }}>{{ result.category }}</span>
+                        </div>
+                    </div>
+                    
+                    <h5 class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i>Calculated Successfully</h5>
+                {% else %}
+                    <i class="fas fa-calculator fa-4x text-muted mb-4 opacity-50"></i>
+                    <h4 class="fw-bold text-muted">Awaiting Input</h4>
+                    <p class="text-muted text-center max-w-75">Enter the raw pollutant concentration values on the left and hit calculate to instantly see the AQI score.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function fillSample() {
+        const ranges = {
+            'pm25': [15, 120],
+            'pm10': [30, 200],
+            'no2': [10, 80],
+            'so2': [5, 40],
+            'co': [0.1, 2.5],
+            'ozone': [10, 90],
+            'nh3': [2, 15],
+            'pb': [0.1, 1.0],
+            'co2': [350, 1500],
+            'voc': [50, 500]
+        };
+        
+        document.querySelectorAll('.pollutant-field:not(.d-none) input').forEach(input => {
+            const gas = input.name;
+            if (ranges[gas]) {
+                const min = ranges[gas][0];
+                const max = ranges[gas][1];
+                const rand = Math.random() * (max - min) + min;
+                input.value = (gas === 'co' || gas === 'pb') ? rand.toFixed(2) : rand.toFixed(1);
+            }
+        });
+    }
+
+    const addGasSelect = document.getElementById('addGasSelect');
+    const addGasBtn = document.getElementById('addGasBtn');
+    const addGasSection = document.getElementById('addGasSection');
+    const gasRecommendation = document.getElementById('gasRecommendation');
+    
+    function updateVisibility() {
+        // Show/hide add section based on options
+        if (addGasSelect.options.length > 1) {
+            addGasSection.classList.remove('d-none');
+        } else {
+            addGasSection.classList.add('d-none');
+        }
+        
+        // Show recommendation if PM2.5 or PM10 is missing
+        const missingCore = Array.from(addGasSelect.options).some(opt => opt.value === 'pm25' || opt.value === 'pm10');
+        if (missingCore) {
+            gasRecommendation.classList.remove('d-none');
+        } else {
+            gasRecommendation.classList.add('d-none');
+        }
+    }
+    
+    // Handle gas removal
+    document.querySelectorAll('.remove-gas').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const field = this.closest('.pollutant-field');
+            const gas = field.getAttribute('data-gas');
+            const labelText = field.querySelector('label').innerText.replace(' ×', '');
+            
+            field.classList.add('d-none');
+            const input = field.querySelector('input');
+            input.value = '';
+            input.disabled = true;
+            
+            const option = document.createElement('option');
+            option.value = gas;
+            option.text = labelText.trim();
+            addGasSelect.appendChild(option);
+            
+            updateVisibility();
+        });
+    });
+    
+    // Handle gas addition
+    if (addGasBtn) {
+        addGasBtn.addEventListener('click', function() {
+            const gas = addGasSelect.value;
+            if (!gas) return;
+            
+            const field = document.querySelector(`.pollutant-field[data-gas="${gas}"]`);
+            field.classList.remove('d-none');
+            
+            const input = field.querySelector('input');
+            input.disabled = false;
+            
+            const option = addGasSelect.querySelector(`option[value="${gas}"]`);
+            if(option) option.remove();
+            
+            addGasSelect.value = '';
+            updateVisibility();
+        });
+    }
+    
+    // Initial call
+    updateVisibility();
+</script>
+{% endblock %}

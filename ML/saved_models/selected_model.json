@@ -1,0 +1,6 @@
+{
+  "model": "random_forest",
+  "path": "random_forest.joblib",
+  "selection": "validation MAE; frozen before test evaluation",
+  "model_sha256": "6482412575d62905445f30f50c3b3ed1d088ed7eef573b6f198b2f82d1adf93c"
+}

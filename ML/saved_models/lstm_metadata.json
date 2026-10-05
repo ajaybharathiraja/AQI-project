@@ -1,0 +1,228 @@
+{
+  "model_id": "pm25-lstm-571f554b8ac6",
+  "training_date_utc": "2026-09-26T13:26:51.187382+00:00",
+  "target": "pm25",
+  "units": "original numeric scale; physical units unverified",
+  "features": [
+    "pm25",
+    "hour_sin",
+    "hour_cos",
+    "weekday_sin",
+    "weekday_cos",
+    "month_sin",
+    "month_cos"
+  ],
+  "observation_features": [
+    "pm25"
+  ],
+  "sequence_length": 24,
+  "sampling_interval_minutes": 60,
+  "forecast_horizon_hours": 1,
+  "supported_horizons_hours": [
+    1
+  ],
+  "availability_gap_hours": 1,
+  "timestamp_semantics": "local hourly interval starts; Asia/Kolkata assumed",
+  "architecture": {
+    "type": "residual LSTM",
+    "hidden_units": 32,
+    "layers": 1,
+    "output_units": 1
+  },
+  "training": {
+    "target": "pm25",
+    "horizon_hours": 1,
+    "sequence_length": 24,
+    "features": [
+      "pm25",
+      "hour_sin",
+      "hour_cos",
+      "weekday_sin",
+      "weekday_cos",
+      "month_sin",
+      "month_cos"
+    ],
+    "maximum_epochs": 12,
+    "early_stop_patience": 3,
+    "batch_size": 512,
+    "shuffle": false,
+    "selection": "validation MAE only",
+    "test_status": "2026 previously examined in Phase 7; retrospective benchmark only",
+    "common_information": "All four primary methods use same complete 24-hour pollutant/calendar sequence and rows",
+    "created_utc": "2026-09-26T13:26:51.187382+00:00",
+    "best_epoch": 4,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "seed": 42
+  },
+  "input_validation": {
+    "pm25": {
+      "minimum": 0.0,
+      "maximum": 950.5499877929688,
+      "meaning": "training support bound, not health threshold"
+    }
+  },
+  "stations": [
+    {
+      "district": "Ariyalur",
+      "port": "Keelapalur"
+    },
+    {
+      "district": "Chengalpattu",
+      "port": "Crescent University, Chengalpattu - Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Alandur,Chennai-Cpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Arumbakkam,Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Gandhi-Ennore-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Kodugaiyur-Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Manali Village,Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Manali-Chennai-Cpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Perungudi-Chennai-Tnpcb"
+    },
+    {
+      "district": "Chennai",
+      "port": "Royapuram, Chennai - Tnpcb"
+    },
+    {
+      "district": "Coimbatore",
+      "port": "Psg Arts And Science"
+    },
+    {
+      "district": "Coimbatore",
+      "port": "Sidco Kurichi"
+    },
+    {
+      "district": "Cuddalore",
+      "port": "Kudikadu"
+    },
+    {
+      "district": "Cuddalore",
+      "port": "Semmandalam"
+    },
+    {
+      "district": "Dindigul",
+      "port": "Mendonsa Colony"
+    },
+    {
+      "district": "Gummidipundi",
+      "port": "Anthoni Pillai Nagar"
+    }
+  ],
+  "selected_primary_model": "random_forest",
+  "evaluation": [
+    {
+      "model": "persistence",
+      "split": "validation",
+      "rows": 45888,
+      "MAE": 10.647854460242389,
+      "RMSE": 26.463501195102616,
+      "R2": 0.5756922459128087,
+      "training_seconds": 0.0,
+      "prediction_seconds": 0.08631340000101773
+    },
+    {
+      "model": "random_forest",
+      "split": "validation",
+      "rows": 45888,
+      "MAE": 9.504644285074532,
+      "RMSE": 24.30075025650174,
+      "R2": 0.6422120344864816,
+      "training_seconds": 109.57051789999969,
+      "prediction_seconds": 0.5037236999996821
+    },
+    {
+      "model": "xgboost",
+      "split": "validation",
+      "rows": 45888,
+      "MAE": 9.746748410764681,
+      "RMSE": 26.239377480584636,
+      "R2": 0.5828488750687417,
+      "training_seconds": 5.570219200000793,
+      "prediction_seconds": 0.19811119999940274
+    },
+    {
+      "model": "lstm",
+      "split": "validation",
+      "rows": 45888,
+      "MAE": 9.940923459556478,
+      "RMSE": 24.152631583842293,
+      "R2": 0.6465603422037145,
+      "training_seconds": 27.53049370000008,
+      "prediction_seconds": 0.6425486000007368
+    },
+    {
+      "model": "persistence",
+      "split": "test_retrospective",
+      "rows": 30797,
+      "MAE": 10.94913856065449,
+      "RMSE": 24.89256984585043,
+      "R2": 0.474252624448093,
+      "training_seconds": 0.0,
+      "prediction_seconds": 0.04234790000009525
+    },
+    {
+      "model": "random_forest",
+      "split": "test_retrospective",
+      "rows": 30797,
+      "MAE": 9.457916973039701,
+      "RMSE": 20.42765633204764,
+      "R2": 0.6459417403289283,
+      "training_seconds": 109.57051789999969,
+      "prediction_seconds": 0.4233419000011054
+    },
+    {
+      "model": "xgboost",
+      "split": "test_retrospective",
+      "rows": 30797,
+      "MAE": 9.668610639212933,
+      "RMSE": 21.33140599419815,
+      "R2": 0.613920619387024,
+      "training_seconds": 5.570219200000793,
+      "prediction_seconds": 0.1796009999998205
+    },
+    {
+      "model": "lstm",
+      "split": "test_retrospective",
+      "rows": 30797,
+      "MAE": 10.186768646418601,
+      "RMSE": 22.205679097700518,
+      "R2": 0.5816249633420429,
+      "training_seconds": 27.53049370000008,
+      "prediction_seconds": 0.4146824999988894
+    }
+  ],
+  "model_sha256": "571f554b8ac6bd65171a4c30ab9e28c60fd8f78beb014af34f42bfdc6a2edc6e",
+  "scaler_sha256": "dca81265b9cf426e1cf9a70c0b49b5023046b885c8d6f05b194d0c3e4a3cba90",
+  "source_fingerprint": {
+    "files": 124,
+    "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+  },
+  "versions": {
+    "torch": "2.14.0+cpu",
+    "numpy": "2.3.5",
+    "sklearn": "1.9.1"
+  },
+  "real_time_feed": false,
+  "aqi_applicable": false,
+  "aqi_unavailable_reason": "Single-hour PM2.5 prediction, unverified units and insufficient eligible pollutants/averaging; no official AQI/category/health alert."
+}

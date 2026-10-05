@@ -1,0 +1,70 @@
+{
+  "training_date_utc": "2026-09-26T13:06:51.423220+00:00",
+  "reference_end": "2025-01-01",
+  "units": "Original numeric scales; physical units unverified",
+  "source_fingerprint": {
+    "files": 124,
+    "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+  },
+  "source_hourly_sha256": "bb212a232682a972fdddfed70c44fecabafc30c0daeefafad41b80c1f1b5707b",
+  "versions": {
+    "sklearn": "1.9.1",
+    "numpy": "2.3.5",
+    "pandas": "3.0.1"
+  },
+  "timestamp_semantics": "hourly interval starts; available no earlier than end; Asia/Kolkata assumed",
+  "features": [
+    "pm25",
+    "pm10",
+    "no2"
+  ],
+  "parameters": {
+    "algorithm": "lloyd",
+    "copy_x": true,
+    "init": "k-means++",
+    "max_iter": 300,
+    "n_clusters": 2,
+    "n_init": 10,
+    "random_state": 42,
+    "tol": 0.0001,
+    "verbose": 0
+  },
+  "reference_rows": 5178,
+  "selection": [
+    {
+      "k": 2,
+      "silhouette_reference_sample": 0.35506217459065975,
+      "inertia": 9214.65894586722,
+      "minimum_reference_cluster_rows": 2547,
+      "supported": true,
+      "silhouette_sample_rows": 2000
+    },
+    {
+      "k": 3,
+      "silhouette_reference_sample": 0.2861895746980697,
+      "inertia": 7229.522078624486,
+      "minimum_reference_cluster_rows": 1601,
+      "supported": true,
+      "silhouette_sample_rows": 2000
+    },
+    {
+      "k": 4,
+      "silhouette_reference_sample": 0.28375811579270066,
+      "inertia": 6098.147649096936,
+      "minimum_reference_cluster_rows": 921,
+      "supported": true,
+      "silhouette_sample_rows": 2000
+    },
+    {
+      "k": 5,
+      "silhouette_reference_sample": 0.30557465217481605,
+      "inertia": 5147.2573934804,
+      "minimum_reference_cluster_rows": 458,
+      "supported": true,
+      "silhouette_sample_rows": 2000
+    }
+  ],
+  "model_sha256": "c00a98c3370400bdeec728290cdc3e69f8e3be2f3327d5e5c8e88db83e2463ae",
+  "preprocessing": "Joint complete hours >=18/day; log1p then reference-only StandardScaler",
+  "fit_and_assign_seconds": 1.4821233000002394
+}

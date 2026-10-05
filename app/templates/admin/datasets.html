@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Datasets - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-file-excel text-info me-2"></i>Dataset Management</h2>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 border-0">
+                <h5 class="fw-bold"><i class="fas fa-upload text-primary me-2"></i>Upload Dataset</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Upload new CPCB/TNPCB Excel or CSV files to append records to the database.</p>
+                <form>
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="formFile" accept=".csv, .xlsx">
+                    </div>
+                    <button type="submit" class="btn btn-primary" disabled>Upload Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 border-0">
+                <h5 class="fw-bold"><i class="fas fa-sync text-success me-2"></i>Trigger Batch Import</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Run the background ingestion script (`import_dataset.py`) to process all data in the <code>raw/</code> directory.</p>
+                <button class="btn btn-success" disabled>Start Ingestion Job</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

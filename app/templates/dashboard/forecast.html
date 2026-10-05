@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Future Forecasting - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-magic text-warning me-2"></i>Future Forecasting</h2>
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 pb-0 border-0">
+                <h5 class="fw-bold">Configure Prediction</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('forecast.index') }}">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Station</label>
+                        <select name="station_id" class="form-select" required>
+                            <option value="" disabled selected>Choose a station...</option>
+                            {% for id, name in stations.items() %}
+                            <option value="{{ id }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Model</label>
+                        <select name="model_type" class="form-select">
+                            <option value="ensemble" selected>Ensemble (Combination of all models)</option>
+                            <option value="xgboost">XGBoost Regressor (Fast)</option>
+                            <option value="random_forest">Random Forest Regressor (Robust)</option>
+                            <option value="svm">Support Vector Machine - SVM (Accurate)</option>
+                            <option value="lstm">LSTM Deep Neural Network (Complex)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Target Date</label>
+                        <input type="date" name="future_date" class="form-control" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary fw-bold hover-lift transition-all"><i class="fas fa-brain me-2"></i>Run AI Prediction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7 mb-4">
+        <div class="card shadow border-0 rounded-4 h-100 bg-light">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center p-5">
+                {% if prediction %}
+                    {% if prediction.error %}
+                        <i class="fas fa-exclamation-triangle fa-4x text-danger mb-4"></i>
+                        <h4 class="fw-bold text-danger">Prediction Failed</h4>
+                        <p class="text-muted text-center">{{ prediction.error }}</p>
+                    {% else %}
+                        <h6 class="text-uppercase text-muted fw-bold mb-3">{{ prediction.station }} • {{ prediction.date }}</h6>
+                        <div class="badge bg-primary mb-4 p-2 rounded-pill"><i class="fas fa-robot me-1"></i> {{ prediction.model_used }}</div>
+                        <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap">
+                            <!-- PM2.5 Circle -->
+                            <div class="text-center p-3 rounded-circle" style="--val: {{ prediction.pm25/3 }}; width: 180px; height: 180px; background: conic-gradient(#4bc0c0 calc(var(--val) * 1%), #e9ecef 0); border: 8px solid white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);">
+                                <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
+                                    <h2 class="display-6 fw-bold text-dark mb-0">{{ prediction.pm25 }}</h2>
+                                    <span class="text-muted fw-bold small">PM2.5</span>
+                                </div>
+                            </div>
+                            
+                            <!-- AQI Circle -->
+                            {% set aqi_color = '#198754' %}
+                            {% if prediction.aqi > 50 %}{% set aqi_color = '#ffc107' %}{% endif %}
+                            {% if prediction.aqi > 100 %}{% set aqi_color = '#fd7e14' %}{% endif %}
+                            {% if prediction.aqi > 200 %}{% set aqi_color = '#dc3545' %}{% endif %}
+                            {% if prediction.aqi > 300 %}{% set aqi_color = '#212529' %}{% endif %}
+                            {% set aqi_style = 'style="--val: ' ~ (prediction.aqi/4) ~ '; width: 180px; height: 180px; background: conic-gradient(' ~ aqi_color ~ ' calc(var(--val) * 1%), #e9ecef 0); border: 8px solid white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);"' %}
+                            <div class="text-center p-3 rounded-circle" {{ aqi_style | safe }}>
+                                <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
+                                    <h2 class="display-6 fw-bold text-dark mb-0">{{ prediction.aqi }}</h2>
+                                    {% set text_color = 'style="color: ' ~ aqi_color ~ ';"' %}
+                                    <span class="fw-bold small" {{ text_color | safe }}>{{ prediction.aqi_cat }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i>Forecast Generated Successfully</h5>
+                    {% endif %}
+                {% else %}
+                    <i class="fas fa-chart-line fa-4x text-muted mb-4 opacity-50"></i>
+                    <h4 class="fw-bold text-muted">Awaiting Input</h4>
+                    <p class="text-muted text-center max-w-75">Select a monitoring station and a future date on the left to generate an AI-powered forecast using our XGBoost models.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

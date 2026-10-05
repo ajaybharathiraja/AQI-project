@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}Exploratory Data Analysis - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+            <h2 class="fw-bold mb-0"><i class="fas fa-chart-pie text-primary me-2"></i>Exploratory Data Analysis</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('dashboard.export_csv') }}" class="btn btn-primary"><i class="fas fa-download me-2"></i>Export Report (CSV)</a>
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Filters Sidebar -->
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 pb-0 border-0">
+                <h5 class="fw-bold"><i class="fas fa-filter me-2 text-primary"></i>Data Filters</h5>
+            </div>
+            <div class="card-body">
+                <form id="filterForm">
+                    <!-- Chart Type -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Chart Type</label>
+                        <select class="form-select" id="chartType">
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart</option>
+                            <option value="line">Line Graph</option>
+                            <option value="polarArea">Polar Heatmap</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Pollutant -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Air Pollutant / Metric</label>
+                        <div class="dropdown">
+                            <button class="form-select text-start" type="button" id="pollutantDropdownBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                PM 2.5
+                            </button>
+                            <ul class="dropdown-menu p-2 shadow" aria-labelledby="pollutantDropdownBtn" style="width: 100%; max-height: 250px; overflow-y: auto;">
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="availability" id="chk_avail"><label class="form-check-label fw-bold text-primary" for="chk_avail">Data Availability</label></div></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="pm25" id="chk_pm25" checked><label class="form-check-label" for="chk_pm25">PM 2.5</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="pm10" id="chk_pm10"><label class="form-check-label" for="chk_pm10">PM 10</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="co" id="chk_co"><label class="form-check-label" for="chk_co">CO (Carbon Monoxide)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="ozone" id="chk_ozone"><label class="form-check-label" for="chk_ozone">Ozone (O3)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="no" id="chk_no"><label class="form-check-label" for="chk_no">NO (Nitric Oxide)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="no2" id="chk_no2"><label class="form-check-label" for="chk_no2">NO2 (Nitrogen Dioxide)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="nox" id="chk_nox"><label class="form-check-label" for="chk_nox">NOx (Nitrogen Oxides)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="so2" id="chk_so2"><label class="form-check-label" for="chk_so2">SO2 (Sulfur Dioxide)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="nh3" id="chk_nh3"><label class="form-check-label" for="chk_nh3">NH3 (Ammonia)</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="benzene" id="chk_ben"><label class="form-check-label" for="chk_ben">Benzene</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="toluene" id="chk_tol"><label class="form-check-label" for="chk_tol">Toluene</label></div></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="xylene" id="chk_xyl"><label class="form-check-label" for="chk_xyl">Xylene</label></div></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="aqi" id="chk_aqi"><label class="form-check-label" for="chk_aqi">Calculated AQI</label></div></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- City -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small text-uppercase">City</label>
+                        <select class="form-select" id="city">
+                            <option value="">All Cities</option>
+                            {% for city in cities %}
+                            <option value="{{ city }}">{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Station / Port -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Station (Port)</label>
+                        <select class="form-select" id="station">
+                            <option value="">All Stations</option>
+                            {% for st in stations %}
+                            <option value="{{ st.id }}" data-city="{{ st.city }}">{{ st.station_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Date Selection -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Date (Optional)</label>
+                        <input type="date" class="form-control" id="dateFilter" min="{{ min_date }}" max="{{ max_date }}">
+                        <small class="text-muted">Pick a specific date instead of year if needed</small>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="button" id="applyFiltersBtn" class="btn btn-primary fw-bold hover-lift">Apply Filters & Update Graph</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chart Area -->
+    <div class="col-md-9 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-header bg-white pt-4 pb-0 border-0 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                <h5 class="fw-bold mb-0" id="chartTitle">Pollutant Analysis</h5>
+                <span id="overallAqiBadge" class="badge bg-secondary fs-6 d-none transition-all">AQI: --</span>
+            </div>
+            <div class="card-body">
+                <div style="position: relative; height: 500px; width: 100%;">
+                    <canvas id="edaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let edaChartInstance = null;
+
+    function fetchAndRenderChart() {
+        const chartType = document.getElementById('chartType').value;
+        const checkboxes = document.querySelectorAll('.pollutant-chk:checked');
+        const pollutant = Array.from(checkboxes).map(cb => cb.value).join(',') || 'pm25';
+        const city = document.getElementById('city').value;
+        const station = document.getElementById('station').value;
+        const dateFilter = document.getElementById('dateFilter').value;
+        
+        // Build query string
+        const params = new URLSearchParams({
+            chart_type: chartType,
+            pollutant: pollutant,
+            city: city,
+            station: station,
+            date: dateFilter // Sending date filter to API
+        });
+        
+        // Update Title and Button
+        const polName = Array.from(checkboxes).map(cb => cb.nextElementSibling.innerText).join(', ') || 'PM 2.5';
+        document.getElementById('chartTitle').innerText = `${polName} Analysis`;
+        
+        const btn = document.getElementById('pollutantDropdownBtn');
+        if(checkboxes.length === 0) btn.innerText = "Select Pollutants";
+        else if(checkboxes.length === 1) btn.innerText = polName;
+        else btn.innerText = checkboxes.length + " metrics selected";
+
+        fetch(`{{ url_for("dashboard.api_eda") }}?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('edaChart').getContext('2d');
+                
+                if (edaChartInstance) {
+                    edaChartInstance.destroy();
+                }
+                
+                // Colors
+                const bgColors = [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)'
+                ];
+                
+                const borderColors = [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ];
+                
+                
+                let datasets = [];
+                if (data.is_all) {
+                    datasets = data.datasets.map((ds, index) => {
+                        // Generate a color based on index
+                        const colorValue = (index * 35) % 360;
+                        const bgColor = `hsla(${colorValue}, 70%, 60%, 0.7)`;
+                        const borderColor = `hsla(${colorValue}, 70%, 50%, 1)`;
+                        return {
+                            label: ds.label,
+                            data: ds.data,
+                            backgroundColor: chartType === 'pie' || chartType === 'polarArea' ? bgColors : bgColor,
+                            borderColor: chartType === 'pie' || chartType === 'polarArea' ? borderColors : borderColor,
+                            borderWidth: 1,
+                            borderRadius: chartType === 'bar' ? 5 : 0
+                        };
+                    });
+                } else {
+                    datasets = [{
+                        label: `Average ${data.pollutant_name}`,
+                        data: data.values,
+                        backgroundColor: chartType === 'pie' || chartType === 'polarArea' ? bgColors : 'rgba(54, 162, 235, 0.7)',
+                        borderColor: chartType === 'pie' || chartType === 'polarArea' ? borderColors : 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        borderRadius: chartType === 'bar' ? 5 : 0
+                    }];
+                }
+                
+                // Calculate and display average AQI badge in the corner
+                const badge = document.getElementById('overallAqiBadge');
+                if (data.aqi_info && data.aqi_info.length > 0) {
+                    let totalAqi = 0;
+                    let validCount = 0;
+                    data.aqi_info.forEach(info => {
+                        if (info !== "N/A") {
+                            const match = info.match(/^(\d+)/);
+                            if (match) {
+                                totalAqi += parseInt(match[1], 10);
+                                validCount++;
+                            }
+                        }
+                    });
+                    
+                    if (validCount > 0) {
+                        const avgAqi = Math.round(totalAqi / validCount);
+                        let cat = "Good";
+                        let bgClass = "bg-success";
+                        if (avgAqi <= 50) { cat = "Good"; bgClass = "bg-success"; }
+                        else if (avgAqi <= 100) { cat = "Satisfactory"; bgClass = "bg-info text-dark"; }
+                        else if (avgAqi <= 200) { cat = "Moderate"; bgClass = "bg-warning text-dark"; }
+                        else if (avgAqi <= 300) { cat = "Poor"; bgClass = "bg-danger"; }
+                        else if (avgAqi <= 400) { cat = "Very Poor"; bgClass = "bg-danger"; }
+                        else { cat = "Severe"; bgClass = "bg-dark"; }
+                        
+                        badge.className = `badge ${bgClass} fs-6 shadow-sm`;
+                        badge.innerHTML = `<i class="fas fa-wind me-1"></i> Avg AQI: ${avgAqi} (${cat})`;
+                    } else {
+                        badge.className = "badge bg-secondary fs-6 shadow-sm d-none";
+                    }
+                } else {
+                    badge.className = "badge bg-secondary fs-6 shadow-sm d-none";
+                }
+                
+                edaChartInstance = new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: data.labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    afterLabel: function(context) {
+                                        const idx = context.dataIndex;
+                                        if (data.aqi_info && data.aqi_info[idx]) {
+                                            return 'Overall AQI: ' + data.aqi_info[idx];
+                                        }
+                                        return null;
+                                    }
+                                }
+                            }
+                        },
+                        scales: (chartType === 'pie' || chartType === 'polarArea') ? {} : {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initial render
+        fetchAndRenderChart();
+        
+        // Cascading dropdown logic for City -> Station
+        const citySelect = document.getElementById('city');
+        const stationSelect = document.getElementById('station');
+        const allStationOptions = Array.from(stationSelect.options);
+        
+        citySelect.addEventListener('change', function() {
+            const selectedCity = this.value;
+            
+            // Clear current options
+            stationSelect.innerHTML = '';
+            
+            // Add back the appropriate options
+            allStationOptions.forEach(option => {
+                if (option.value === "") {
+                    // Always keep "All Stations"
+                    stationSelect.appendChild(option);
+                } else if (selectedCity === "" || option.getAttribute('data-city') === selectedCity) {
+                    // Keep options that match the selected city, or all if no city is selected
+                    stationSelect.appendChild(option);
+                }
+            });
+            
+            // Reset station to "All Stations" when city changes
+            stationSelect.value = "";
+        });
+        
+        // Listen to button click
+        document.getElementById('applyFiltersBtn').addEventListener('click', fetchAndRenderChart);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Login - AQI Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <h3 class="mb-0 fw-bold">Welcome Back</h3>
+            </div>
+            <div class="card-body p-4 p-md-5 bg-white">
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold text-uppercase">Email Address</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
+                            <input type="email" id="email" name="email" class="form-control border-start-0 ps-0" placeholder="user@example.com" required autofocus>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold text-uppercase">Password</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" id="password" name="password" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill shadow-sm transition-all hover-lift">Login to Platform</button>
+                    </div>
+                </form>
+                
+                <div class="mt-4 pt-4 border-top">
+                    <p class="text-center text-muted small fw-bold mb-3">TESTING SHORTCUTS</p>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm rounded-pill fw-bold" onclick="document.getElementById('email').value='admin@test.com'; document.getElementById('password').value='password123';">
+                            <i class="fas fa-user-shield me-2"></i>Auto-Fill Admin Credentials
+                        </button>
+                        <button type="button" class="btn btn-outline-info btn-sm rounded-pill fw-bold" onclick="document.getElementById('email').value='user@test.com'; document.getElementById('password').value='password123';">
+                            <i class="fas fa-user me-2"></i>Auto-Fill Normal User Credentials
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light text-center py-3">
+                <p class="mb-0 text-muted">Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-primary fw-bold text-decoration-none">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+    .transition-all { transition: all 0.2s ease-in-out; }
+    .input-group-text { background-color: #f8f9fa; }
+    .form-control:focus { box-shadow: none; border-color: #dee2e6; }
+    .input-group:focus-within { box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25); border-radius: 0.375rem; }
+    .input-group:focus-within .form-control, .input-group:focus-within .input-group-text { border-color: #86b7fe; }
+</style>
+{% endblock %}

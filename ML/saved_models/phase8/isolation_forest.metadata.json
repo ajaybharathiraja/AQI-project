@@ -1,0 +1,485 @@
+{
+  "training_date_utc": "2026-09-26T13:06:51.423220+00:00",
+  "reference_end": "2025-01-01",
+  "units": "Original numeric scales; physical units unverified",
+  "source_fingerprint": {
+    "files": 124,
+    "sha256": "bd70724bcacea9a8cb5476e11558afc194c6f10571bc93a403965ae8c0d28083"
+  },
+  "source_hourly_sha256": "bb212a232682a972fdddfed70c44fecabafc30c0daeefafad41b80c1f1b5707b",
+  "versions": {
+    "sklearn": "1.9.1",
+    "numpy": "2.3.5",
+    "pandas": "3.0.1"
+  },
+  "timestamp_semantics": "hourly interval starts; available no earlier than end; Asia/Kolkata assumed",
+  "stations": {
+    "Ariyalur / Keelapalur": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2"
+      ],
+      "q99": {
+        "pm25": 70.22749999999996,
+        "pm10": 113.0,
+        "no2": 78.97749999999996
+      },
+      "reference_rows": 10110,
+      "offset": -0.639798379235704,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chengalpattu / Crescent University, Chengalpattu - Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 88.36500000000001,
+        "pm10": 717.9775000000003,
+        "no2": 164.6925,
+        "co": 1.0,
+        "o3": 6.370950000000001
+      },
+      "reference_rows": 3428,
+      "offset": -0.653659955499436,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Alandur,Chennai-Cpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 191.19692499999996,
+        "pm10": 327.9339249999998,
+        "no2": 181.5,
+        "so2": 27.62869999999997,
+        "co": 5.224924999999998,
+        "o3": 93.5
+      },
+      "reference_rows": 13002,
+      "offset": -0.5911742554833891,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Arumbakkam,Chennai-Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2"
+      ],
+      "q99": {
+        "pm25": 93.0,
+        "pm10": 186.3050000000003,
+        "no2": 42.25,
+        "so2": 31.027500000000146
+      },
+      "reference_rows": 8890,
+      "offset": -0.6173911665097347,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Gandhi-Ennore-Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 105.90304999999994,
+        "pm10": 199.50999999999976,
+        "no2": 49.00247499999994,
+        "so2": 32.0,
+        "o3": 27.1575
+      },
+      "reference_rows": 3500,
+      "offset": -0.6076272281850317,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Kodugaiyur-Chennai-Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 43.5,
+        "pm10": 188.0675000000001,
+        "no2": 35.76550000000007,
+        "so2": 46.66350000000002,
+        "co": 1.255,
+        "o3": 73.70965000000002
+      },
+      "reference_rows": 8674,
+      "offset": -0.5922393503314877,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Manali Village,Chennai-Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 105.552625,
+        "pm10": 276.59205000000003,
+        "no2": 15.872500000000002,
+        "so2": 20.07115,
+        "co": 0.9175,
+        "o3": 64.495
+      },
+      "reference_rows": 1652,
+      "offset": -0.5902190951494445,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Manali-Chennai-Cpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 114.75479999999999,
+        "pm10": 232.44349999999878,
+        "no2": 30.75,
+        "so2": 58.98999999999978,
+        "co": 3.0,
+        "o3": 70.5
+      },
+      "reference_rows": 8305,
+      "offset": -0.5768577789654238,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Perungudi-Chennai-Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 108.75,
+        "pm10": 262.5,
+        "no2": 23.75,
+        "so2": 7.7017499999999925,
+        "co": 1.0301749999999994,
+        "o3": 31.017499999999927
+      },
+      "reference_rows": 10194,
+      "offset": -0.5961619775515237,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Chennai / Royapuram, Chennai - Tnpcb": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 100.61999999999989,
+        "pm10": 168.5,
+        "no2": 59.61999999999989,
+        "co": 1.4218999999999868,
+        "o3": 20.5
+      },
+      "reference_rows": 6753,
+      "offset": -0.6002042576658337,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Coimbatore / Psg Arts And Science": {
+      "features": [
+        "pm25",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 91.9788,
+        "no2": 10.7492,
+        "so2": 33.9096,
+        "co": 1.66,
+        "o3": 5.02
+      },
+      "reference_rows": 3003,
+      "offset": -0.5984657674430075,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Coimbatore / Sidco Kurichi": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2",
+        "co",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 101.04250000000002,
+        "pm10": 749.7750000000005,
+        "no2": 56.877500000000055,
+        "so2": 14.75,
+        "co": 2.0,
+        "o3": 75.96250000000009
+      },
+      "reference_rows": 4684,
+      "offset": -0.5916782088190559,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Cuddalore / Kudikadu": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2"
+      ],
+      "q99": {
+        "pm25": 98.84739999999992,
+        "pm10": 198.1841999999999,
+        "no2": 274.3299999999999,
+        "so2": 16.2216
+      },
+      "reference_rows": 6143,
+      "offset": -0.632454751655319,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Cuddalore / Semmandalam": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "o3"
+      ],
+      "q99": {
+        "pm25": 91.01650000000006,
+        "pm10": 113.70950000000012,
+        "no2": 46.0005,
+        "o3": 4.274500000000016
+      },
+      "reference_rows": 7496,
+      "offset": -0.6334257072552875,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Dindigul / Mendonsa Colony": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2"
+      ],
+      "q99": {
+        "pm25": 84.52690000000004,
+        "pm10": 204.7261000000001,
+        "no2": 351.48640000000006,
+        "so2": 74.0317
+      },
+      "reference_rows": 4484,
+      "offset": -0.6394643875848953,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    },
+    "Gummidipundi / Anthoni Pillai Nagar": {
+      "features": [
+        "pm25",
+        "pm10",
+        "no2",
+        "so2"
+      ],
+      "q99": {
+        "pm25": 248.0,
+        "pm10": 363.28000000000065,
+        "no2": 37.06560000000001,
+        "so2": 98.83200000000015
+      },
+      "reference_rows": 14349,
+      "offset": -0.6237130582782396,
+      "parameters": {
+        "bootstrap": false,
+        "contamination": 0.01,
+        "max_features": 1.0,
+        "max_samples": 256,
+        "n_estimators": 150,
+        "n_jobs": 2,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      }
+    }
+  },
+  "preprocessing": "Station-specific complete cases; log1p; no imputation",
+  "contamination_policy": 0.01,
+  "fit_seconds": 11.224159500001406,
+  "score_seconds": 12.287116200001037,
+  "model_sha256": "a8cc627043ae5bc60ac6878f0d5c36160a4948d10420d06a9c28e6272c363c39"
+}

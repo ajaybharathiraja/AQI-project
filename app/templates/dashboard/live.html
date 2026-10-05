@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Live AQI Monitoring{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark"><i class="fas fa-satellite-dish me-2 text-danger blink"></i>Real-Time Live Monitoring</h2>
+    <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+    <div class="card-header bg-white pt-4 pb-0 border-0 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0">Live Sensor Feeds</h5>
+        <div class="d-flex align-items-center">
+            <input type="text" id="searchInput" class="form-control form-control-sm me-3" placeholder="Search station or city..." style="width: 250px;">
+            <span class="badge bg-success" id="status-badge">● LIVE</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" id="liveTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Station</th>
+                        <th>Timestamp</th>
+                        <th>PM2.5</th>
+                        <th>PM10</th>
+                        <th>NO2</th>
+                        <th>SO2</th>
+                        <th>CO</th>
+                        <th>Ozone</th>
+                        <th>AQI Score</th>
+                        <th>Health Status</th>
+                    </tr>
+                </thead>
+                <tbody id="liveDataBody">
+                    <!-- Data will be injected here via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
+    .blink {
+        animation: blinker 1.5s linear infinite;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function fetchLiveData() {
+        fetch('{{ url_for("dashboard.api_live") }}')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('liveDataBody');
+                tbody.innerHTML = '';
+                
+                const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+                
+                data.forEach(row => {
+                    // Filter logic
+                    if (searchQuery && !row.station.toLowerCase().includes(searchQuery)) {
+                        return; // Skip this row if it doesn't match the search
+                    }
+                    
+                    let catColor = 'bg-secondary';
+                    if(row.category === 'Good') catColor = 'bg-success';
+                    else if(row.category === 'Satisfactory') catColor = 'bg-warning text-dark';
+                    else if(row.category === 'Moderate') catColor = 'bg-orange';
+                    else if(row.category === 'Poor') catColor = 'bg-danger';
+                    else if(row.category === 'Severe') catColor = 'bg-dark';
+                    
+                    if(row.category === 'Moderate') {
+                        catColor = 'background-color: #fd7e14; color: white;';
+                    } else {
+                        catColor = 'class="badge ' + catColor + '"';
+                    }
+                    
+                    let badgeStr = row.category === 'Moderate' ? 
+                        `<span class="badge" style="${catColor}">${row.category}</span>` : 
+                        `<span ${catColor}>${row.category}</span>`;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="fw-bold text-primary">${row.station}</td>
+                        <td class="text-muted small">${row.timestamp}</td>
+                        <td>${row.pm25}</td>
+                        <td>${row.pm10}</td>
+                        <td>${row.no2}</td>
+                        <td>${row.so2}</td>
+                        <td>${row.co}</td>
+                        <td>${row.ozone}</td>
+                        <td class="fw-bold fs-5">${row.aqi}</td>
+                        <td>${badgeStr}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => console.error('Error fetching live data:', err));
+    }
+
+    // Fetch immediately on load
+    fetchLiveData();
+    
+    // Set interval to fetch every 3 seconds
+    setInterval(fetchLiveData, 3000);
+
+    // Re-render table immediately when user types in search bar
+    document.getElementById('searchInput').addEventListener('input', fetchLiveData);
+</script>
+{% endblock %}

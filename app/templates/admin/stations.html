@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Stations - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-broadcast-tower text-success me-2"></i>Monitoring Stations</h2>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>City</th>
+                            <th>Station Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for station in stations %}
+                        <tr>
+                            <td>{{ station.id }}</td>
+                            <td>{{ station.city }}</td>
+                            <td>{{ station.station_name }}</td>
+                            <td>{{ station.latitude or 'Not Set' }}</td>
+                            <td>{{ station.longitude or 'Not Set' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No stations found. Run the dataset import script.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
