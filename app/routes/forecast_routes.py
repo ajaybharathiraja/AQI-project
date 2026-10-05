@@ -91,7 +91,16 @@ def index():
                             pred_pm25 = base_pred * variance
                 
                 from app.utils.aqi_calculator import calculate_indian_aqi
-                pred_aqi, aqi_cat = calculate_indian_aqi(pm25=pred_pm25, pm10=0, no2=0, so2=0, co=0, ozone=0)
+                
+                # Simulate other gases based on the primary PM2.5 prediction
+                import random
+                pred_pm10 = pred_pm25 * random.uniform(1.2, 1.8)
+                pred_no2 = pred_pm25 * random.uniform(0.3, 0.7)
+                pred_so2 = pred_pm25 * random.uniform(0.1, 0.3)
+                pred_co = pred_pm25 * random.uniform(0.01, 0.03)
+                pred_ozone = pred_pm25 * random.uniform(0.4, 0.8)
+                
+                pred_aqi, aqi_cat = calculate_indian_aqi(pm25=pred_pm25, pm10=pred_pm10, no2=pred_no2, so2=pred_so2, co=pred_co, ozone=pred_ozone)
                 
                 if model_type == 'lstm':
                     model_used = 'LSTM Neural Network'
@@ -106,6 +115,11 @@ def index():
 
                 prediction = {
                     'pm25': round(pred_pm25, 2),
+                    'pm10': round(pred_pm10, 2),
+                    'no2': round(pred_no2, 2),
+                    'so2': round(pred_so2, 2),
+                    'co': round(pred_co, 2),
+                    'ozone': round(pred_ozone, 2),
                     'aqi': round(pred_aqi),
                     'aqi_cat': aqi_cat,
                     'date': future_date,
