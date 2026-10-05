@@ -5,8 +5,9 @@ from datetime import datetime
 import sqlite3
 import os
 
-filepath = 'a:/AQI project/air_quality_platform/data/live_data.csv'
-db_path = 'a:/AQI project/air_quality_platform/air_quality.db'
+basedir = os.path.abspath(os.path.dirname(__file__))
+filepath = os.path.join(basedir, 'data', 'live_data.csv')
+db_path = os.path.join(basedir, 'air_quality.db')
 
 print('Starting live data generator service for ALL stations...')
 while True:
