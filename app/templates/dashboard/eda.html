@@ -43,6 +43,12 @@
                                 PM 2.5
                             </button>
                             <ul class="dropdown-menu p-2 shadow" aria-labelledby="pollutantDropdownBtn" style="width: 100%; max-height: 250px; overflow-y: auto;">
+                                <li>
+                                    <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                                        <button type="button" class="btn btn-sm btn-outline-primary fw-bold" id="selectAllPollutants">Select All</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary fw-bold" id="clearPollutants">Clear</button>
+                                    </div>
+                                </li>
                                 <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="availability" id="chk_avail"><label class="form-check-label fw-bold text-primary" for="chk_avail">Data Availability</label></div></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><div class="form-check"><input class="form-check-input pollutant-chk" type="checkbox" value="pm25" id="chk_pm25" checked><label class="form-check-label" for="chk_pm25">PM 2.5</label></div></li>
@@ -285,6 +291,37 @@
         const stationSelect = document.getElementById('station');
         const allStationOptions = Array.from(stationSelect.options);
         
+        // Select All / Clear Pollutants Logic
+        document.getElementById('selectAllPollutants').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll('.pollutant-chk').forEach(chk => {
+                chk.checked = true;
+            });
+            // Update the button text
+            document.getElementById('pollutantDropdownBtn').innerText = document.querySelectorAll('.pollutant-chk:checked').length + " metrics selected";
+        });
+        
+        document.getElementById('clearPollutants').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll('.pollutant-chk').forEach(chk => {
+                chk.checked = false;
+            });
+            document.getElementById('pollutantDropdownBtn').innerText = "Select Pollutants";
+        });
+        
+        // Update text when individual checkboxes are clicked
+        document.querySelectorAll('.pollutant-chk').forEach(chk => {
+            chk.addEventListener('change', function() {
+                const checked = document.querySelectorAll('.pollutant-chk:checked');
+                const btn = document.getElementById('pollutantDropdownBtn');
+                if(checked.length === 0) btn.innerText = "Select Pollutants";
+                else if(checked.length === 1) btn.innerText = checked[0].nextElementSibling.innerText;
+                else btn.innerText = checked.length + " metrics selected";
+            });
+        });
+
         citySelect.addEventListener('change', function() {
             const selectedCity = this.value;
             
