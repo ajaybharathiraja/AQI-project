@@ -86,6 +86,50 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Full Gas Summary -->
+                        <div class="row w-100 mt-2 mb-4 px-3">
+                            <div class="col-12 mb-3">
+                                <h6 class="fw-bold text-muted border-bottom pb-2">Full Gas Summary (Predicted)</h6>
+                            </div>
+                            
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.pm25 }}</h5>
+                                    <small class="text-muted fw-bold">PM2.5</small>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.pm10 }}</h5>
+                                    <small class="text-muted fw-bold">PM10</small>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.no2 }}</h5>
+                                    <small class="text-muted fw-bold">NO2</small>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.so2 }}</h5>
+                                    <small class="text-muted fw-bold">SO2</small>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.co }}</h5>
+                                    <small class="text-muted fw-bold">CO</small>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-2 mb-3 text-center">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.ozone }}</h5>
+                                    <small class="text-muted fw-bold">Ozone</small>
+                                </div>
+                            </div>
+                        </div>
                         <h5 class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i>Forecast Generated Successfully</h5>
                     {% endif %}
                 {% else %}
