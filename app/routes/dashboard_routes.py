@@ -25,12 +25,51 @@ def live():
 def api_live():
     import pandas as pd
     import os
-    filepath = 'a:/AQI project/air_quality_platform/data/live_data.csv'
-    if os.path.exists(filepath):
+    from datetime import datetime
+    import random
+    
+    basedir = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    filepath = os.path.join(basedir, 'data', 'live_data.csv')
+    
+    if os.path.exists(filepath) and not os.environ.get('VERCEL'):
         df = pd.read_csv(filepath)
         return jsonify(df.to_dict(orient='records'))
     else:
-        return jsonify([])
+        # Mock Live Data generation since background worker doesn't run on Vercel
+        try:
+            stations = Station.query.limit(5).all()
+        except:
+            stations = []
+        
+        if not stations:
+            return jsonify([])
+            
+        data = []
+        now = datetime.now()
+        for s in stations:
+            pm25 = round(random.uniform(20, 150), 1)
+            pm10 = round(random.uniform(40, 250), 1)
+            no2 = round(random.uniform(10, 80), 1)
+            so2 = round(random.uniform(5, 40), 1)
+            co = round(random.uniform(0.1, 2.0), 2)
+            ozone = round(random.uniform(10, 100), 1)
+            
+            from app.utils.aqi_calculator import calculate_indian_aqi
+            aqi_val, cat = calculate_indian_aqi(pm25, pm10, no2, so2, co, ozone)
+            
+            data.append({
+                'timestamp': now.strftime('%Y-%m-%d %H:%M:%S'),
+                'station': f"{s.city} - {s.station_name}",
+                'pm25': pm25,
+                'pm10': pm10,
+                'no2': no2,
+                'so2': so2,
+                'co': co,
+                'ozone': ozone,
+                'aqi': round(aqi_val),
+                'category': cat
+            })
+        return jsonify(data)
 
 @dashboard_bp.route('/eda')
 @login_required
