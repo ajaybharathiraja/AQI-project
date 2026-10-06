@@ -3,62 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AQI Platform{% endblock %}</title>
+    <title>{% block title %}AQI Intelligence{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     {% block head %}{% endblock %}
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-dark" href="/"><i class="fa-solid fa-leaf text-success me-2 bg-light rounded-circle p-1"></i>AQI Platform</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('dashboard.index') }}">Dashboard</a>
-                        </li>
-                        {% if current_user.is_admin %}
-                        <li class="nav-item">
-                            <a class="nav-link text-warning fw-bold" href="{{ url_for('admin.dashboard') }}">Admin</a>
-                        </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.logout') }}">Logout ({{ current_user.name }})</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.register') }}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
+<body>
+    {% if current_user.is_authenticated %}
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header d-flex align-items-center">
+            <i class="fa-solid fa-leaf text-success fa-2x me-3"></i>
+            <div>
+                <h5 class="fw-bold mb-0">AQI Intelligence</h5>
+                <small class="text-light" style="opacity: 0.7; font-size: 0.7rem;">Clean Air • Healthier Tomorrow</small>
             </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
+        
+        <div class="mt-4">
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}" href="{{ url_for('dashboard.index') }}">
+                    <i class="fas fa-home" style="width: 20px;"></i> Dashboard
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.live' %}active{% endif %}" href="{{ url_for('dashboard.live') }}">
+                    <i class="fas fa-satellite-dish" style="width: 20px;"></i> Live Monitoring
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.eda' %}active{% endif %}" href="{{ url_for('dashboard.eda') }}">
+                    <i class="fas fa-chart-bar" style="width: 20px;"></i> Exploratory Analysis
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.map_view' %}active{% endif %}" href="{{ url_for('dashboard.map_view') }}">
+                    <i class="fas fa-map-marker-alt" style="width: 20px;"></i> Pollution Hotspots
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'forecast.index' %}active{% endif %}" href="{{ url_for('forecast.index') }}">
+                    <i class="fas fa-chart-line" style="width: 20px;"></i> Future Forecasting
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.alerts' %}active{% endif %}" href="{{ url_for('dashboard.alerts') }}">
+                    <i class="fas fa-bell" style="width: 20px;"></i> Pollution Alerts
+                    <span class="badge bg-danger rounded-pill ms-auto">3</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'dashboard.calculator' %}active{% endif %}" href="{{ url_for('dashboard.calculator') }}">
+                    <i class="fas fa-calculator" style="width: 20px;"></i> AQI Evaluator
+                </a>
+            </div>
+            
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px;">
+            
+            {% if current_user.is_admin %}
+            <div class="nav-item">
+                <a class="nav-link text-warning" href="{{ url_for('admin.dashboard') }}">
+                    <i class="fas fa-database" style="width: 20px;"></i> Data Management
+                </a>
+            </div>
             {% endif %}
-        {% endwith %}
+            
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cog" style="width: 20px;"></i> Settings
+                </a>
+            </div>
+        </div>
 
-        {% block content %}{% endblock %}
+        <div class="bottom-info">
+            <h6 class="fw-bold mb-1">Cleaner Air<br>Greener Tomorrow</h6>
+            <p class="mb-0" style="font-size: 0.75rem; opacity: 0.8;">Using AI & Data for a Healthier World</p>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div id="content" {% if not current_user.is_authenticated %}style="margin-left: 0;"{% endif %}>
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center sticky-top">
+            <div class="d-flex align-items-center position-relative">
+                {% if current_user.is_authenticated %}
+                <button class="btn btn-light d-md-none me-3" type="button" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                {% else %}
+                <div class="d-flex align-items-center me-4">
+                    <i class="fa-solid fa-leaf text-success fa-2x me-2"></i>
+                    <h5 class="fw-bold mb-0 text-dark">AQI Intelligence</h5>
+                </div>
+                {% endif %}
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" placeholder="Search city, station or data...">
+            </div>
+            
+            <div class="d-flex align-items-center gap-4">
+
+                
+                <div class="position-relative cursor-pointer">
+                    <i class="far fa-bell fa-lg text-muted"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </div>
+                
+                {% if current_user.is_authenticated %}
+                <div class="dropdown">
+                    <div class="d-flex align-items-center cursor-pointer" data-bs-toggle="dropdown">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                            <i class="fas fa-user text-secondary"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size: 0.9rem; line-height: 1.2;">{{ current_user.name }}</div>
+                            <small class="text-muted" style="font-size: 0.75rem;">{% if current_user.is_admin %}Administrator{% else %}User{% endif %}</small>
+                        </div>
+                        <i class="fas fa-chevron-down ms-2 text-muted" style="font-size: 0.7rem;"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <div>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid p-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

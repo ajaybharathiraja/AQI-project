@@ -13,7 +13,62 @@ def index():
     if current_user.is_admin:
         from flask import redirect, url_for
         return redirect(url_for('admin.dashboard'))
-    return render_template('dashboard/dashboard.html')
+        
+    import random
+    from sqlalchemy import func
+    
+    stations = Station.query.all()
+    
+    city_coords = {
+        'Ariyalur': (11.1400, 79.0786),
+        'Chengalpattu': (12.6841, 79.9836),
+        'Chennai': (13.0827, 80.2707),
+        'Coimbatore': (11.0168, 76.9558),
+        'Cuddalur': (11.7480, 79.7714),
+        'Dindigul': (10.3673, 77.9803),
+        'Gummundipundi': (13.4072, 80.1171)
+    }
+    
+    avg_pollutants = db.session.query(
+        AirQualityRecord.station_id,
+        func.avg(AirQualityRecord.pm25),
+        func.avg(AirQualityRecord.pm10),
+        func.avg(AirQualityRecord.no2),
+        func.avg(AirQualityRecord.so2),
+        func.avg(AirQualityRecord.co),
+        func.avg(AirQualityRecord.ozone)
+    ).group_by(AirQualityRecord.station_id).all()
+    
+    from app.utils.aqi_calculator import calculate_indian_aqi
+    aqi_dict = {}
+    for r in avg_pollutants:
+        pm25, pm10, no2, so2, co, ozone = r[1], r[2], r[3], r[4], r[5], r[6]
+        aqi_val, aqi_cat = calculate_indian_aqi(pm25, pm10, no2, so2, co, ozone)
+        aqi_dict[r[0]] = {
+            'aqi': round(aqi_val),
+            'cat': aqi_cat,
+            'pm25': round(pm25, 2) if pm25 else 0,
+            'pm10': round(pm10, 2) if pm10 else 0,
+            'no2': round(no2, 2) if no2 else 0,
+            'so2': round(so2, 2) if so2 else 0,
+            'co': round(co, 2) if co else 0,
+            'ozone': round(ozone, 2) if ozone else 0
+        }
+    
+    map_data = []
+    for s in stations:
+        base_lat, base_lon = city_coords.get(s.city, (13.0827, 80.2707))
+        lat = s.latitude if s.latitude else base_lat + random.uniform(-0.03, 0.03)
+        lon = s.longitude if s.longitude else base_lon + random.uniform(-0.03, 0.03)
+        info = aqi_dict.get(s.id, {'aqi': 50, 'cat': 'Good', 'pm25': 0, 'pm10': 0, 'no2': 0, 'so2': 0, 'co': 0, 'ozone': 0})
+        map_data.append({
+            'name': s.station_name, 'city': s.city, 'lat': lat, 'lon': lon,
+            'aqi': info['aqi'], 'cat': info['cat'], 'pm25': info['pm25'],
+            'pm10': info['pm10'], 'no2': info['no2'], 'so2': info['so2'],
+            'co': info['co'], 'ozone': info['ozone']
+        })
+
+    return render_template('dashboard/dashboard.html', map_data=map_data)
 
 @dashboard_bp.route('/live')
 @login_required

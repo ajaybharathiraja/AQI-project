@@ -1,149 +1,356 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - AQI Platform{% endblock %}
+{% block title %}Dashboard - AQI Intelligence{% endblock %}
+
+{% block head %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    /* Specific overrides for dashboard */
+    .module-card { transition: all 0.2s; cursor: pointer; }
+    .module-card:hover { transform: translateY(-3px); border-color: var(--primary-blue) !important; }
+    
+    .info-window { font-family: 'Inter', sans-serif; }
+    .info-window h6 { margin: 0 0 5px 0; font-weight: bold; }
+    .info-window p { margin: 0; font-size: 13px; color: #6c757d; }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold"><i class="fas fa-chart-line text-primary me-2"></i>Dashboard Overview</h2>
-            <p class="text-muted mb-0">Welcome back, <strong>{{ current_user.name }}</strong></p>
+<!-- Dashboard Header -->
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1">Good evening, {{ current_user.name }} 👋</h3>
+        <p class="text-muted mb-0">Here's the latest air quality overview from your monitoring network.</p>
+    </div>
+    <div class="text-end">
+        <div class="text-muted small mb-1">Friday, 23 May 2025</div>
+        <div class="text-muted small mb-1">Last updated: 2 minutes ago</div>
+        <div class="d-flex align-items-center justify-content-end text-success fw-bold small">
+            <span class="status-dot status-online"></span> System Online
         </div>
     </div>
 </div>
 
-<div class="row">
-    <!-- Stat Cards -->
-    <div class="col-md-3 mb-4">
-        <div class="card bg-white text-dark shadow rounded-4 border-0 h-100">
-            <div class="card-body py-4">
+<!-- KPI Cards Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-blue"><i class="fas fa-city"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem;">Cities Monitored</div>
+            </div>
+            <h3 class="fw-bold mb-1">7</h3>
+            <div class="trend-up"><i class="fas fa-arrow-up"></i> 12% <span class="text-muted fw-normal" style="font-size: 0.7rem;">vs last month</span></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-green"><i class="fas fa-broadcast-tower"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem;">Active Stations</div>
+            </div>
+            <h3 class="fw-bold mb-1">16</h3>
+            <div class="trend-up"><i class="fas fa-arrow-up"></i> 6% <span class="text-muted fw-normal" style="font-size: 0.7rem;">vs last month</span></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-yellow"><i class="fas fa-cloud"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem; line-height:1.2;">Current Avg AQI</div>
+            </div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <h3 class="fw-bold mb-0">86</h3>
+                <span class="aqi-badge badge-mod">Moderate</span>
+            </div>
+            <div class="trend-down"><i class="fas fa-arrow-down"></i> 8% <span class="text-muted fw-normal" style="font-size: 0.7rem;">vs last week</span></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-red"><i class="fas fa-bell"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem;">Active Alerts</div>
+            </div>
+            <h3 class="fw-bold mb-1">3</h3>
+            <div class="trend-down"><i class="fas fa-arrow-up"></i> 200% <span class="text-muted fw-normal" style="font-size: 0.7rem;">vs last week</span></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-purple"><i class="fas fa-database"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem;">Total Records</div>
+            </div>
+            <h3 class="fw-bold mb-1">1M+</h3>
+            <div class="trend-up"><i class="fas fa-arrow-up"></i> 25% <span class="text-muted fw-normal" style="font-size: 0.7rem;">vs last month</span></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card kpi-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="kpi-icon kpi-cyan"><i class="fas fa-brain"></i></div>
+                <div class="text-muted fw-semibold" style="font-size: 0.8rem;">Model Accuracy</div>
+            </div>
+            <h3 class="fw-bold mb-1">94.2%</h3>
+            <div class="text-success fw-semibold" style="font-size: 0.8rem;"><i class="fas fa-chart-line"></i> LSTM (Best)</div>
+        </div>
+    </div>
+</div>
+
+<!-- Main 3-Column Layout -->
+<div class="row g-4 mb-4">
+    <!-- Current Air Quality -->
+    <div class="col-md-4">
+        <div class="card h-100 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-leaf text-success me-2"></i>Current Air Quality</h5>
+                <select id="citySelect" class="form-select form-select-sm border-0 bg-light w-auto fw-medium">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+            
+            <div class="text-center mb-3">
+                <i class="fas fa-map-marker-alt text-primary"></i> <span id="cardCityName" class="fw-bold fs-5">Chennai</span>
+                <div class="text-muted small">Last updated: <span id="cardLastUpdated">just now</span></div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center mb-4">
+                <!-- Gauge -->
+                <div class="aqi-gauge-container">
+                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                        <circle class="gauge-circle-bg" cx="50" cy="50" r="40"></circle>
+                        <circle id="cardGaugeCircle" class="gauge-circle-val" cx="50" cy="50" r="40" stroke-dashoffset="180" style="transition: stroke-dashoffset 1s ease-in-out, stroke 1s ease-in-out; stroke: #F59E0B;"></circle>
+                    </svg>
+                    <div class="gauge-text">
+                        <h1 id="cardAqiValue" class="fw-bold mb-0 text-dark" style="font-size: 2.5rem;">86</h1>
+                        <div id="cardAqiCategory" class="aqi-badge badge-mod mb-1" style="background: #FBBF24; color: black;">Moderate</div>
+                        <div class="text-muted small fw-semibold">AQI (IN)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pollutants list -->
+            <div class="mt-2 px-2">
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">PM2.5</div>
+                    <div class="pollutant-bar-bg"><div id="barPm25" class="pollutant-bar-fill" style="width: 0%; background: var(--orange-unh); transition: width 1s;"></div></div>
+                    <div id="cardPm25" class="pollutant-val small">0 µg/m³</div>
+                </div>
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">PM10</div>
+                    <div class="pollutant-bar-bg"><div id="barPm10" class="pollutant-bar-fill" style="width: 0%; background: var(--yellow-mod); transition: width 1s;"></div></div>
+                    <div id="cardPm10" class="pollutant-val small">0 µg/m³</div>
+                </div>
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">NO₂</div>
+                    <div class="pollutant-bar-bg"><div id="barNo2" class="pollutant-bar-fill" style="width: 0%; background: var(--green-good); transition: width 1s;"></div></div>
+                    <div id="cardNo2" class="pollutant-val small">0 ppb</div>
+                </div>
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">SO₂</div>
+                    <div class="pollutant-bar-bg"><div id="barSo2" class="pollutant-bar-fill" style="width: 0%; background: var(--green-good); transition: width 1s;"></div></div>
+                    <div id="cardSo2" class="pollutant-val small">0 ppb</div>
+                </div>
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">CO</div>
+                    <div class="pollutant-bar-bg"><div id="barCo" class="pollutant-bar-fill" style="width: 0%; background: var(--green-good); transition: width 1s;"></div></div>
+                    <div id="cardCo" class="pollutant-val small">0 ppm</div>
+                </div>
+                <div class="d-flex align-items-center pollutant-row">
+                    <div class="pollutant-label text-muted small">O₃</div>
+                    <div class="pollutant-bar-bg"><div id="barOzone" class="pollutant-bar-fill" style="width: 0%; background: var(--yellow-mod); transition: width 1s;"></div></div>
+                    <div id="cardOzone" class="pollutant-val small">0 ppb</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live AQI Map -->
+    <div class="col-md-5">
+        <div class="card h-100 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-map text-success me-2"></i>Live AQI Map</h5>
+                <div class="d-flex gap-2">
+                    <select class="form-select form-select-sm border-0 bg-light w-auto fw-medium">
+                        <option>AQI</option>
+                    </select>
+                    <select class="form-select form-select-sm border-0 bg-light w-auto fw-medium">
+                        <option>24 Hours</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="flex-grow-1 bg-light rounded-3 position-relative overflow-hidden" style="min-height: 250px;">
+                <!-- Real Leaflet Map Container -->
+                <div id="map" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;"></div>
+            </div>
+            
+            <!-- Map Legend -->
+            <div class="d-flex justify-content-between mt-3 px-2 small">
+                <div class="d-flex align-items-center"><span class="status-dot" style="background:var(--green-good)"></span> Good</div>
+                <div class="d-flex align-items-center"><span class="status-dot" style="background:var(--yellow-mod)"></span> Mod</div>
+                <div class="d-flex align-items-center"><span class="status-dot" style="background:var(--orange-unh)"></span> Unh (Sens)</div>
+                <div class="d-flex align-items-center"><span class="status-dot" style="background:var(--red-unh)"></span> Unh</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column (System Status & Weather) -->
+    <div class="col-md-3">
+        <div class="d-flex flex-column h-100 gap-4">
+            <!-- System Status -->
+            <div class="card p-4 flex-grow-1">
+                <h6 class="fw-bold mb-4"><i class="fas fa-heartbeat text-success me-2"></i>System Status</h6>
+                
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small"><span class="status-dot status-online"></span> Data Server</span>
+                    <span class="text-success small fw-semibold">Online</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small"><span class="status-dot status-online"></span> Sensor Network</span>
+                    <span class="text-success small fw-semibold">Online</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small"><span class="status-dot status-online"></span> ML Prediction</span>
+                    <span class="text-success small fw-semibold">Ready</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small"><span class="status-dot status-online"></span> Database</span>
+                    <span class="text-success small fw-semibold">Connected</span>
+                </div>
+                <hr class="my-2">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-primary text-uppercase fw-bold mb-2">Total Cities</h6>
-                        <h2 class="mb-0 fw-bold">7</h2>
+                    <span class="text-muted small"><i class="fas fa-history me-1"></i> Last Sync</span>
+                    <span class="text-dark small fw-medium">2 minutes ago</span>
+                </div>
+            </div>
+
+            <!-- Weather Card -->
+            <div class="card p-4">
+                <h6 class="fw-bold mb-3"><i class="fas fa-cloud-sun text-warning me-2"></i>Weather Conditions</h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-sun text-warning fa-3x me-3"></i>
+                        <div>
+                            <h2 class="fw-bold mb-0 text-dark">32°C</h2>
+                            <span class="text-muted small">Clear Sky</span>
+                        </div>
                     </div>
-                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
-                        <i class="fas fa-city fa-2x"></i>
+                    <div class="text-end small text-muted">
+                        <div class="mb-1">Humidity: <strong class="text-dark">58%</strong></div>
+                        <div class="mb-1">Wind: <strong class="text-dark">12 km/h</strong></div>
+                        <div>Pressure: <strong class="text-dark">1012 hPa</strong></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Alerts and Modules -->
+<div class="row g-4 mb-4">
+    <!-- Recent Alerts -->
+    <div class="col-md-5">
+        <div class="card h-100 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0"><i class="fas fa-bell text-danger me-2"></i>Recent Alerts</h6>
+                <a href="{{ url_for('dashboard.alerts') }}" class="text-primary small text-decoration-none fw-medium">View All</a>
+            </div>
+            
+            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width:35px;height:35px;"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="flex-grow-1">
+                    <div class="fw-bold text-danger" style="font-size: 0.9rem;">PM2.5 exceeded safe level</div>
+                    <div class="text-muted small">Chennai - Station 04</div>
+                </div>
+                <div class="text-end">
+                    <div class="text-muted small mb-1">12 minutes ago</div>
+                    <span class="badge bg-danger rounded-pill px-2">AQI 164</span>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width:35px;height:35px; background: var(--orange-unh) !important;"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="flex-grow-1">
+                    <div class="fw-bold text-dark" style="font-size: 0.9rem; color: var(--orange-unh) !important;">AQI reached Unhealthy level</div>
+                    <div class="text-muted small">Madurai - Station 02</div>
+                </div>
+                <div class="text-end">
+                    <div class="text-muted small mb-1">34 minutes ago</div>
+                    <span class="badge rounded-pill px-2 text-white" style="background: var(--orange-unh);">AQI 121</span>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width:35px;height:35px;"><i class="fas fa-check-circle"></i></div>
+                <div class="flex-grow-1">
+                    <div class="fw-bold text-success" style="font-size: 0.9rem;">Air quality returned to Moderate</div>
+                    <div class="text-muted small">Coimbatore - Station 01</div>
+                </div>
+                <div class="text-end">
+                    <div class="text-muted small mb-1">1 hour ago</div>
+                    <span class="badge bg-warning text-dark rounded-pill px-2">AQI 68</span>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="col-md-3 mb-4">
-        <div class="card bg-white text-dark shadow rounded-4 border-0 h-100">
-            <div class="card-body py-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-success text-uppercase fw-bold mb-2">Total Stations</h6>
-                        <h2 class="mb-0 fw-bold">16</h2>
-                    </div>
-                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
-                        <i class="fas fa-broadcast-tower fa-2x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 mb-4">
-        <div class="card bg-white text-dark shadow rounded-4 border-0 h-100">
-            <div class="card-body py-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-warning text-uppercase fw-bold mb-2">Total Records</h6>
-                        <h2 class="mb-0 fw-bold">1M+</h2>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle">
-                        <i class="fas fa-database fa-2x"></i>
+    <!-- Platform Modules -->
+    <div class="col-md-7">
+        <div class="card h-100 p-4">
+            <h6 class="fw-bold mb-3"><i class="fas fa-cubes text-primary me-2"></i>Platform Modules</h6>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card">
+                        <i class="fas fa-chart-pie fa-2x text-primary mb-2"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Exploratory<br>Data Analysis</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">Analyze pollutant patterns and trends.</p>
+                        <a href="{{ url_for('dashboard.eda') }}" class="btn btn-primary btn-sm w-100">Explore &rarr;</a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 mb-4">
-        <div class="card bg-white text-dark shadow rounded-4 border-0 h-100">
-            <div class="card-body py-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-danger text-uppercase fw-bold mb-2">Active Alerts</h6>
-                        <h2 class="mb-0 fw-bold">0</h2>
-                    </div>
-                    <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
-                        <i class="fas fa-bell fa-2x"></i>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card border-success" style="border-width: 2px !important;">
+                        <i class="fas fa-map-marked-alt fa-2x text-success mb-2"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Pollution<br>Hotspots</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">View geospatial distribution of AQI.</p>
+                        <a href="{{ url_for('dashboard.map_view') }}" class="btn btn-success btn-sm w-100">Open Map &rarr;</a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                <h5 class="fw-bold mb-0">Platform Modules</h5>
-            </div>
-            <div class="card-body p-4">
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <a href="{{ url_for('dashboard.eda') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
-                                <i class="fas fa-chart-pie fa-3x text-primary mb-3"></i>
-                                <h5 class="fw-bold">Exploratory Data Analysis</h5>
-                                <p class="text-muted small">Analyze pollutant parameters, correlations, and distributions.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        <a href="{{ url_for('dashboard.map_view') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
-                                <i class="fas fa-map-marked-alt fa-3x text-success mb-3"></i>
-                                <h5 class="fw-bold">Pollution Hotspots</h5>
-                                <p class="text-muted small">View geospatial distribution of AQI and pollutant concentrations.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        <a href="{{ url_for('forecast.index') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
-                                <i class="fas fa-brain fa-3x text-info mb-3"></i>
-                                <h5 class="fw-bold">Future Forecasting</h5>
-                                <p class="text-muted small">Predict and forecast future AQI using Random Forest, SVM, XGBoost, and LSTM.</p>
-                            </div>
-                        </a>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card">
+                        <i class="fas fa-robot fa-2x text-purple mb-2" style="color:var(--purple-haz)"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Future<br>Forecasting</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">Predict AQI using AI/ML models.</p>
+                        <a href="{{ url_for('forecast.index') }}" class="btn btn-sm w-100 text-white" style="background:var(--purple-haz)">View Forecast &rarr;</a>
                     </div>
                 </div>
-                
-                <!-- Second Row of Cards -->
-                <div class="row g-4 mt-1">
-                    <div class="col-md-4">
-                        <a href="{{ url_for('dashboard.alerts') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer border-danger" style="border-width: 2px !important;">
-                                <i class="fas fa-bell fa-3x text-danger mb-3"></i>
-                                <h5 class="fw-bold">Pollution Alerts</h5>
-                                <p class="text-muted small">Real-time monitoring and threshold alerts for hazardous AQI events.</p>
-                            </div>
-                        </a>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card">
+                        <i class="fas fa-bell fa-2x text-danger mb-2"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Pollution<br>Alerts</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">Monitor real-time feeds and alerts.</p>
+                        <a href="{{ url_for('dashboard.alerts') }}" class="btn btn-danger btn-sm w-100">View Alerts &rarr;</a>
                     </div>
-                    <div class="col-md-4">
-                        <a href="{{ url_for('dashboard.calculator') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer">
-                                <i class="fas fa-calculator fa-3x text-warning mb-3"></i>
-                                <h5 class="fw-bold">Live AQI Evaluator</h5>
-                                <p class="text-muted small">Input raw pollutant values to instantly calculate and evaluate the AQI score.</p>
-                            </div>
-                        </a>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card">
+                        <i class="fas fa-calculator fa-2x text-warning mb-2"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Live AQI<br>Evaluator</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">Calculate AQI from raw pollutant values.</p>
+                        <a href="{{ url_for('dashboard.calculator') }}" class="btn btn-warning btn-sm w-100">Calculate &rarr;</a>
                     </div>
-                    <div class="col-md-4">
-                        <a href="{{ url_for('dashboard.live') }}" class="text-decoration-none text-dark">
-                            <div class="p-4 border rounded-4 bg-light text-center h-100 hover-lift transition-all cursor-pointer border-success" style="border-width: 2px !important;">
-                                <i class="fas fa-satellite-dish fa-3x text-success mb-3 blink"></i>
-                                <h5 class="fw-bold">Real-Time Data</h5>
-                                <p class="text-muted small">View live sensor feeds continuously updating from the CSV server database.</p>
-                            </div>
-                        </a>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-light text-center h-100 d-flex flex-column module-card">
+                        <i class="fas fa-satellite-dish fa-2x text-info mb-2"></i>
+                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">Real-Time<br>Data</h6>
+                        <p class="text-muted mb-3" style="font-size:0.7rem; flex-grow:1;">View live sensor feeds and data.</p>
+                        <a href="{{ url_for('dashboard.live') }}" class="btn btn-info btn-sm text-white w-100">Monitor &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -151,11 +358,134 @@
     </div>
 </div>
 
-<style>
-    .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; border-color: #0d6efd !important; }
-    .transition-all { transition: all 0.2s ease-in-out; }
-    .cursor-pointer { cursor: pointer; }
-    @keyframes blinker { 50% { opacity: 0; } }
-    .blink { animation: blinker 1.5s linear infinite; }
-</style>
+{% endblock %}
+
+{% block scripts %}
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script id="map-data" type="application/json">
+{{ map_data | tojson | safe }}
+</script>
+
+<script>
+    // Initialize charts and map
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // --- MAP INITIALIZATION ---
+        var map = L.map('map').setView([11.1271, 78.6569], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+        
+        var stationsData = [];
+        try {
+            stationsData = JSON.parse(document.getElementById('map-data').textContent);
+        } catch(e) { console.error("Map data parsing failed", e); }
+        
+        function getMarkerColor(aqi) {
+            if (aqi <= 50) return '#16A34A'; // green
+            if (aqi <= 100) return '#FBBF24'; // yellow
+            if (aqi <= 150) return '#F97316'; // orange
+            if (aqi <= 200) return '#EF4444'; // red
+            return '#8B5CF6'; // purple
+        }
+
+        stationsData.forEach(function(station) {
+            var color = getMarkerColor(station.aqi);
+            
+            // Create a custom circle marker with AQI label
+            var markerIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color:${color}; width:30px; height:30px; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; color:${color==='#FBBF24'?'black':'white'}; font-weight:bold; font-size:12px; box-shadow:0 2px 5px rgba(0,0,0,0.3);">${station.aqi}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+            
+            var marker = L.marker([station.lat, station.lon], {icon: markerIcon}).addTo(map);
+
+            var popupContent = `
+                <div class="info-window p-1" style="min-width: 200px;">
+                    <h6 class="text-primary mb-1 fw-bold">${station.name}</h6>
+                    <p class="text-muted small mb-2"><i class="fas fa-city me-1"></i>${station.city}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge rounded-pill" style="background-color: ${color}; color: ${color === '#FBBF24' ? '#000' : '#fff'};">
+                            ${station.cat}
+                        </span>
+                    </div>
+                </div>
+            `;
+            marker.bindPopup(popupContent);
+        });
+        
+        // --- DYNAMIC CITY CARD ---
+        let uniqueCities = [...new Set(stationsData.map(s => s.city))].sort();
+        let citySelect = document.getElementById("citySelect");
+        if (uniqueCities.length > 0) {
+            citySelect.innerHTML = "";
+            uniqueCities.forEach(city => {
+                let opt = document.createElement("option");
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+            updateCityCard(uniqueCities[0]);
+        }
+        
+        citySelect.addEventListener("change", function() {
+            updateCityCard(this.value);
+        });
+        
+        function updateCityCard(cityName) {
+            let cityStations = stationsData.filter(s => s.city === cityName);
+            if (!cityStations.length) return;
+            
+            document.getElementById("cardCityName").textContent = cityName;
+            
+            let pm25 = 0, pm10 = 0, no2 = 0, so2 = 0, co = 0, ozone = 0, aqi = 0;
+            cityStations.forEach(s => {
+                pm25 += s.pm25; pm10 += s.pm10; no2 += s.no2; so2 += s.so2; co += s.co; ozone += s.ozone; aqi += s.aqi;
+            });
+            let n = cityStations.length;
+            pm25 /= n; pm10 /= n; no2 /= n; so2 /= n; co /= n; ozone /= n; aqi = Math.round(aqi/n);
+            
+            document.getElementById("cardPm25").textContent = pm25.toFixed(1) + " µg/m³";
+            document.getElementById("cardPm10").textContent = pm10.toFixed(1) + " µg/m³";
+            document.getElementById("cardNo2").textContent = no2.toFixed(1) + " ppb";
+            document.getElementById("cardSo2").textContent = so2.toFixed(1) + " ppb";
+            document.getElementById("cardCo").textContent = co.toFixed(1) + " ppm";
+            document.getElementById("cardOzone").textContent = ozone.toFixed(1) + " ppb";
+            
+            // Adjust bar widths (max theoretical values for scale)
+            document.getElementById("barPm25").style.width = Math.min((pm25/250)*100, 100) + "%";
+            document.getElementById("barPm10").style.width = Math.min((pm10/430)*100, 100) + "%";
+            document.getElementById("barNo2").style.width = Math.min((no2/200)*100, 100) + "%";
+            document.getElementById("barSo2").style.width = Math.min((so2/200)*100, 100) + "%";
+            document.getElementById("barCo").style.width = Math.min((co/10)*100, 100) + "%";
+            document.getElementById("barOzone").style.width = Math.min((ozone/200)*100, 100) + "%";
+            
+            let color = getMarkerColor(aqi);
+            let cat = "Good";
+            if(aqi > 50) cat = "Satisfactory";
+            if(aqi > 100) cat = "Moderate";
+            if(aqi > 200) cat = "Poor";
+            if(aqi > 300) cat = "Severe";
+            
+            document.getElementById("cardAqiValue").textContent = aqi;
+            let catBadge = document.getElementById("cardAqiCategory");
+            catBadge.textContent = cat;
+            catBadge.style.backgroundColor = color;
+            catBadge.style.color = (color === '#FBBF24') ? 'black' : 'white';
+            
+            let circle = document.getElementById("cardGaugeCircle");
+            let circumference = 2 * Math.PI * 40; // ~251.2
+            let offset = circumference - (Math.min(aqi/300, 1) * circumference);
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+            circle.style.stroke = color;
+        }
+        
+
+    });
+</script>
 {% endblock %}
