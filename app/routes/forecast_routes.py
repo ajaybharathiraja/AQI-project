@@ -36,10 +36,13 @@ def index():
         from app.utils.aqi_calculator import calculate_indian_aqi
         import random
         
-        for model_type in ['svm', 'lstm']:
+        for model_type in ['svm', 'lstm', 'ensemble']:
             if model_type == 'lstm':
                 model_filename = 'aqi_lstm.h5'
                 model_used = 'LSTM Neural Network'
+            elif model_type == 'ensemble':
+                model_filename = 'aqi_model.pkl'
+                model_used = 'AI Ensemble (Overall Health)'
             else:
                 model_filename = 'svm_model.joblib'
                 model_used = 'Support Vector Machine (SVM)'
