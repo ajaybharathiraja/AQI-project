@@ -29,13 +29,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Select Model</label>
-                        <select name="model_type" class="form-select">
-                            <option value="svm" selected>Support Vector Machine - SVM (Accurate)</option>
-                            <option value="lstm">LSTM Deep Neural Network (Complex)</option>
-                        </select>
-                    </div>
+
                     <div class="mb-4">
                         <label class="form-label fw-bold">Target Date</label>
                         <input type="date" name="future_date" class="form-control" required>
@@ -51,88 +45,98 @@
     <div class="col-md-7 mb-4">
         <div class="card shadow border-0 rounded-4 h-100 bg-light">
             <div class="card-body d-flex flex-column justify-content-center align-items-center p-5">
-                {% if prediction %}
-                    {% if prediction.error %}
+                {% if predictions %}
+                    {% if predictions.svm.error or predictions.lstm.error %}
                         <i class="fas fa-exclamation-triangle fa-4x text-danger mb-4"></i>
                         <h4 class="fw-bold text-danger">Prediction Failed</h4>
-                        <p class="text-muted text-center">{{ prediction.error }}</p>
+                        <p class="text-muted text-center">{{ predictions.svm.error or predictions.lstm.error }}</p>
                     {% else %}
-                        <h6 class="text-uppercase text-muted fw-bold mb-3">{{ prediction.station }} • {{ prediction.date }}</h6>
-                        <div class="badge bg-primary mb-4 p-2 rounded-pill"><i class="fas fa-robot me-1"></i> {{ prediction.model_used }}</div>
-                        <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap">
-                            <!-- PM2.5 Circle -->
-                            <div class="text-center p-3 rounded-circle" style="--val: {{ prediction.pm25/3 }}; width: 180px; height: 180px; background: conic-gradient(#4bc0c0 calc(var(--val) * 1%), #e9ecef 0); border: 8px solid white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);">
-                                <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
-                                    <h2 class="display-6 fw-bold text-dark mb-0">{{ prediction.pm25 }}</h2>
-                                    <span class="text-muted fw-bold small">PM2.5</span>
-                                </div>
-                            </div>
-                            
-                            <!-- AQI Circle -->
-                            {% set aqi_color = '#198754' %}
-                            {% if prediction.aqi > 50 %}{% set aqi_color = '#ffc107' %}{% endif %}
-                            {% if prediction.aqi > 100 %}{% set aqi_color = '#fd7e14' %}{% endif %}
-                            {% if prediction.aqi > 200 %}{% set aqi_color = '#dc3545' %}{% endif %}
-                            {% if prediction.aqi > 300 %}{% set aqi_color = '#212529' %}{% endif %}
-                            {% set aqi_style = 'style="--val: ' ~ (prediction.aqi/4) ~ '; width: 180px; height: 180px; background: conic-gradient(' ~ aqi_color ~ ' calc(var(--val) * 1%), #e9ecef 0); border: 8px solid white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);"' %}
-                            <div class="text-center p-3 rounded-circle" {{ aqi_style | safe }}>
-                                <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
-                                    <h2 class="display-6 fw-bold text-dark mb-0">{{ prediction.aqi }}</h2>
-                                    {% set text_color = 'style="color: ' ~ aqi_color ~ ';"' %}
-                                    <span class="fw-bold small" {{ text_color | safe }}>{{ prediction.aqi_cat }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <h6 class="text-uppercase text-muted fw-bold mb-3">{{ predictions.svm.station }} • {{ predictions.svm.date }}</h6>
                         
-                        <!-- Full Gas Summary -->
-                        <div class="row w-100 mt-2 mb-4 px-3">
-                            <div class="col-12 mb-3">
-                                <h6 class="fw-bold text-muted border-bottom pb-2">Full Gas Summary (Predicted)</h6>
+                        <!-- SVM Result (Classification) -->
+                        <div class="w-100 mb-3 p-3 rounded-4 bg-white border shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="badge bg-primary p-2 rounded-pill"><i class="fas fa-robot me-1"></i> Support Vector Machine (SVM)</div>
+                                <h5 class="mb-0 fw-bold">Health Status</h5>
+                            </div>
+                            {% set aqi_color = '#198754' %}
+                            {% if predictions.svm.aqi > 50 %}{% set aqi_color = '#ffc107' %}{% endif %}
+                            {% if predictions.svm.aqi > 100 %}{% set aqi_color = '#fd7e14' %}{% endif %}
+                            {% if predictions.svm.aqi > 200 %}{% set aqi_color = '#dc3545' %}{% endif %}
+                            {% if predictions.svm.aqi > 300 %}{% set aqi_color = '#212529' %}{% endif %}
+                            {% set bg_style = 'style="background-color: ' ~ aqi_color ~ '20; border: 2px solid ' ~ aqi_color ~ ';"' %}
+                            {% set text_style = 'style="color: ' ~ aqi_color ~ ';"' %}
+                            <div class="text-center p-3 rounded-4" {{ bg_style | safe }}>
+                                <h2 class="display-6 fw-bold mb-0" {{ text_style | safe }}>{{ predictions.svm.aqi_cat }}</h2>
+                            </div>
+                        </div>
+
+                        <!-- LSTM Result (Exact Values) -->
+                        <div class="w-100 mb-2 p-3 rounded-4 bg-white border shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="badge bg-primary p-2 rounded-pill"><i class="fas fa-network-wired me-1"></i> LSTM Neural Network</div>
+                                <h5 class="mb-0 fw-bold">Predicted Values</h5>
                             </div>
                             
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.pm25 }}</h5>
-                                    <small class="text-muted fw-bold">PM2.5</small>
+                            <div class="d-flex justify-content-center mb-2">
+                                <!-- PM2.5 Circle ONLY -->
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="text-center p-2 rounded-circle" style="--val: {{ predictions.lstm.pm25/3 }}; width: 110px; height: 110px; background: conic-gradient(#4bc0c0 calc(var(--val) * 1%), #e9ecef 0); border: 6px solid white; box-shadow: 0 .25rem .5rem rgba(0,0,0,.1);">
+                                        <div class="d-flex flex-column justify-content-center h-100 align-items-center bg-white rounded-circle">
+                                            <h4 class="fw-bold text-dark mb-0">{{ predictions.lstm.pm25 }}</h4>
+                                        </div>
+                                    </div>
+                                    <span class="text-muted fw-bold mt-1" style="font-size: 0.8rem;">Air (PM2.5)</span>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.pm10 }}</h5>
-                                    <small class="text-muted fw-bold">PM10</small>
+                            
+                            <!-- Full Gas Summary -->
+                            <div class="row w-100 mt-1 px-2">
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.pm25 }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">PM2.5</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.no2 }}</h5>
-                                    <small class="text-muted fw-bold">NO2</small>
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.pm10 }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">PM10</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.so2 }}</h5>
-                                    <small class="text-muted fw-bold">SO2</small>
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.no2 }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">NO2</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.co }}</h5>
-                                    <small class="text-muted fw-bold">CO</small>
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.so2 }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">SO2</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-md-2 mb-3 text-center">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold text-dark mb-0">{{ prediction.ozone }}</h5>
-                                    <small class="text-muted fw-bold">Ozone</small>
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.co }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">CO</small>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-2 mb-2 text-center px-1">
+                                    <div class="p-1 border rounded bg-light">
+                                        <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ predictions.lstm.ozone }}</div>
+                                        <small class="text-muted fw-bold" style="font-size: 0.65rem;">Ozone</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                         <h5 class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i>Forecast Generated Successfully</h5>
                     {% endif %}
                 {% else %}
                     <i class="fas fa-chart-line fa-4x text-muted mb-4 opacity-50"></i>
                     <h4 class="fw-bold text-muted">Awaiting Input</h4>
-                    <p class="text-muted text-center max-w-75">Select a monitoring station and a future date on the left to generate an AI-powered forecast using our XGBoost models.</p>
+                    <p class="text-muted text-center max-w-75">Select a monitoring station and a future date on the left to generate a dual AI-powered forecast.</p>
                 {% endif %}
             </div>
         </div>
