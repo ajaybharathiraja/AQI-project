@@ -10,9 +10,9 @@
     {% block head %}{% endblock %}
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="/"><i class="fa-solid fa-leaf text-success me-2 bg-white rounded-circle p-1"></i>AQI Platform</a>
+            <a class="navbar-brand fw-bold text-dark" href="/"><i class="fa-solid fa-leaf text-success me-2 bg-light rounded-circle p-1"></i>AQI Platform</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -20,7 +20,7 @@
                 <ul class="navbar-nav ms-auto">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ url_for('dashboard.index') }}">Dashboard</a>
+                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('dashboard.index') }}">Dashboard</a>
                         </li>
                         {% if current_user.is_admin %}
                         <li class="nav-item">
@@ -28,14 +28,14 @@
                         </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ url_for('auth.logout') }}">Logout ({{ current_user.name }})</a>
+                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.logout') }}">Logout ({{ current_user.name }})</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.login') }}">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ url_for('auth.register') }}">Register</a>
+                            <a class="nav-link text-dark fw-semibold" href="{{ url_for('auth.register') }}">Register</a>
                         </li>
                     {% endif %}
                 </ul>
