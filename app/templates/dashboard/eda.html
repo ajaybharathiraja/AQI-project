@@ -91,11 +91,20 @@
                         </select>
                     </div>
                     
-                    <!-- Date Selection -->
+                    <!-- Time Filters -->
                     <div class="mb-4">
-                        <label class="form-label fw-bold text-muted small text-uppercase">Date (Optional)</label>
-                        <input type="date" class="form-control" id="dateFilter" min="{{ min_date }}" max="{{ max_date }}">
-                        <small class="text-muted">Pick a specific date instead of year if needed</small>
+                        <label class="form-label fw-bold text-muted small text-uppercase mb-2">Time Range Filter</label>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small mb-1">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" min="{{ min_date }}" max="{{ max_date }}">
+                        </div>
+                        
+                        <div>
+                            <label class="form-label text-muted small mb-1">End Date</label>
+                            <input type="date" class="form-control" id="endDate" min="{{ min_date }}" max="{{ max_date }}">
+                        </div>
+                        <small class="text-muted d-block mt-2">Leave blank to view all time</small>
                     </div>
                     
                     <div class="d-grid">
@@ -136,7 +145,8 @@
         const pollutant = Array.from(checkboxes).map(cb => cb.value).join(',') || 'pm25';
         const city = document.getElementById('city').value;
         const station = document.getElementById('station').value;
-        const dateFilter = document.getElementById('dateFilter').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
         
         // Build query string
         const params = new URLSearchParams({
@@ -144,7 +154,8 @@
             pollutant: pollutant,
             city: city,
             station: station,
-            date: dateFilter // Sending date filter to API
+            start_date: startDate,
+            end_date: endDate
         });
         
         // Update Title and Button

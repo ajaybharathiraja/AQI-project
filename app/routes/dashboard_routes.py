@@ -157,7 +157,8 @@ def api_eda():
     pollutants = [p.strip() for p in pollutant_param.split(',') if p.strip()]
     city = request.args.get('city', '')
     station_id = request.args.get('station', '')
-    year = request.args.get('year', '')
+    start_date = request.args.get('start_date', '')
+    end_date = request.args.get('end_date', '')
     
     col_map = {
         'pm25': AirQualityRecord.pm25,
@@ -226,11 +227,10 @@ def api_eda():
         query = query.filter(Station.city == city)
 
     try:
-        selected_date = request.args.get('date', '')
-        if selected_date:
-            query = query.filter(func.date(AirQualityRecord.timestamp) == selected_date)
-        elif year:
-            query = query.filter(extract('year', AirQualityRecord.timestamp) == int(year))
+        if start_date:
+            query = query.filter(func.date(AirQualityRecord.timestamp) >= start_date)
+        if end_date:
+            query = query.filter(func.date(AirQualityRecord.timestamp) <= end_date)
             
         results = query.group_by(grouping_col).all()
         
