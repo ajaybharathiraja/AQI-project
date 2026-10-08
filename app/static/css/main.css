@@ -205,4 +205,6 @@ body {
     #sidebar { margin-left: -260px; }
     #sidebar.active { margin-left: 0; }
     #content { margin-left: 0; }
+    .top-navbar { padding: 10px 15px; }
+    .container-fluid { padding: 15px !important; }
 }
