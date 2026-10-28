@@ -201,6 +201,155 @@ body {
 .badge-good { background-color: #F0FDF4; color: var(--green-good); }
 .badge-unh { background-color: #FEF2F2; color: var(--red-unh); }
 
+/* =========================================
+   Notification Bell & Dropdown Styles
+   ========================================= */
+.bell-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: var(--text-slate);
+    position: relative;
+    cursor: pointer;
+}
+
+.bell-btn:hover {
+    background-color: rgba(37, 99, 235, 0.08);
+    color: var(--primary-blue);
+}
+
+.bell-btn:hover .bell-icon {
+    animation: bell-swing 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    color: var(--primary-blue) !important;
+}
+
+@keyframes bell-swing {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(14deg); }
+    40% { transform: rotate(-14deg); }
+    60% { transform: rotate(8deg); }
+    80% { transform: rotate(-5deg); }
+}
+
+.notification-badge-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #EF4444;
+    border: 2px solid #FFFFFF;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    transition: all 0.3s ease;
+}
+
+.notification-pulse {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: bell-pulse 2s infinite;
+}
+
+@keyframes bell-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+.notification-dropdown {
+    width: 375px;
+    max-width: 92vw;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    overflow: hidden;
+    transform-origin: top right;
+    animation: notif-slide-down 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes notif-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #F1F5F9;
+    text-decoration: none;
+    color: var(--text-slate);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    position: relative;
+}
+
+.notification-item:hover {
+    background-color: #F8FAFC;
+    color: var(--text-slate);
+}
+
+.notification-item.unread {
+    background-color: rgba(239, 68, 68, 0.04);
+}
+
+.notification-item.unread::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: #EF4444;
+}
+
+.notification-icon-box {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.notif-icon-danger {
+    background-color: #FEE2E2;
+    color: #DC2626;
+}
+
+.notif-icon-warning {
+    background-color: #FEF3C7;
+    color: #D97706;
+}
+
+.notif-icon-info {
+    background-color: #E0E7FF;
+    color: #4F46E5;
+}
+
+.notif-icon-success {
+    background-color: #DCFCE7;
+    color: #16A34A;
+}
+
 @media (max-width: 768px) {
     #sidebar { margin-left: -260px; }
     #sidebar.active { margin-left: 0; }

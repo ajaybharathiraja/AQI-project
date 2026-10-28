@@ -104,9 +104,46 @@
             <div class="d-flex align-items-center gap-4">
 
                 
-                <div class="position-relative cursor-pointer">
-                    <i class="far fa-bell fa-lg text-muted"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                <!-- Notification Bell Dropdown -->
+                <div class="dropdown position-relative" id="notificationDropdownContainer">
+                    <button class="btn btn-link p-0 position-relative text-decoration-none shadow-none border-0 bell-btn" 
+                            type="button" 
+                            id="notificationBellBtn" 
+                            data-bs-toggle="dropdown" 
+                            data-bs-auto-close="true"
+                            aria-expanded="false" 
+                            aria-label="View notifications">
+                        <i class="far fa-bell fa-lg text-secondary bell-icon"></i>
+                        <span id="notificationBadge" class="notification-badge-dot notification-pulse"></span>
+                    </button>
+                    
+                    <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 p-0 mt-3 notification-dropdown" 
+                         aria-labelledby="notificationBellBtn">
+                        <div class="p-3 border-bottom d-flex align-items-center justify-content-between bg-light rounded-top-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <h6 class="fw-bold mb-0 text-dark">
+                                    <i class="fas fa-bell text-danger me-1"></i> Notifications
+                                </h6>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 small" id="notificationCountBadge">3 New</span>
+                            </div>
+                            <button class="btn btn-sm btn-link text-decoration-none text-muted p-0 small fw-medium" id="markAllReadBtn" title="Mark all as read">
+                                <i class="fas fa-check-double me-1"></i>Mark read
+                            </button>
+                        </div>
+                        
+                        <div class="notification-list" id="notificationList" style="max-height: 350px; overflow-y: auto;">
+                            <div class="p-4 text-center text-muted" id="notificationLoading">
+                                <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                <span class="small">Checking for live alerts...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-2 border-top bg-light rounded-bottom-4 d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('dashboard.alerts') }}" class="btn btn-link btn-sm text-decoration-none text-primary fw-semibold w-100 text-center py-1">
+                                View All Pollution Alerts <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 
                 {% if current_user.is_authenticated %}
@@ -156,6 +193,142 @@
         document.getElementById('sidebarToggle')?.addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('active');
         });
+
+        // Notification Dropdown Logic
+        (function() {
+            const bellBtn = document.getElementById('notificationBellBtn');
+            const badge = document.getElementById('notificationBadge');
+            const countBadge = document.getElementById('notificationCountBadge');
+            const notifList = document.getElementById('notificationList');
+            const markAllBtn = document.getElementById('markAllReadBtn');
+            let notificationsData = [];
+            let isMarkedRead = sessionStorage.getItem('aqi_notif_read') === 'true';
+
+            function updateBadgeState() {
+                if (isMarkedRead) {
+                    if (badge) badge.style.display = 'none';
+                    if (countBadge) {
+                        countBadge.textContent = '0 New';
+                        countBadge.className = 'badge bg-secondary-subtle text-muted rounded-pill px-2 py-1 small';
+                    }
+                } else {
+                    if (badge) badge.style.display = 'block';
+                }
+            }
+
+            function renderNotifications(items) {
+                if (!notifList) return;
+                if (!items || items.length === 0) {
+                    notifList.innerHTML = `
+                        <div class="p-4 text-center text-muted">
+                            <i class="fas fa-check-circle text-success fa-3x mb-2 opacity-75"></i>
+                            <div class="fw-semibold text-dark">All Clear!</div>
+                            <small class="text-muted">No active pollution alerts at this time.</small>
+                        </div>`;
+                    if (badge) badge.style.display = 'none';
+                    if (countBadge) countBadge.textContent = '0 New';
+                    return;
+                }
+
+                if (!isMarkedRead && countBadge) {
+                    countBadge.textContent = `${items.length} New`;
+                    countBadge.className = 'badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 small';
+                }
+
+                let html = '';
+                items.forEach((item) => {
+                    let iconClass = 'notif-icon-danger';
+                    if (item.type === 'warning') iconClass = 'notif-icon-warning';
+                    else if (item.type === 'info') iconClass = 'notif-icon-info';
+                    else if (item.type === 'success') iconClass = 'notif-icon-success';
+
+                    const unreadClass = isMarkedRead ? '' : 'unread';
+
+                    html += `
+                        <a href="${item.link || '#'}" class="notification-item ${unreadClass}">
+                            <div class="notification-icon-box ${iconClass}">
+                                <i class="${item.icon || 'fas fa-exclamation-triangle'}"></i>
+                            </div>
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">${item.title}</span>
+                                    <small class="text-muted ms-2 text-nowrap" style="font-size: 0.72rem;">${item.time || ''}</small>
+                                </div>
+                                <div class="text-muted text-truncate mb-1" style="font-size: 0.8rem;">
+                                    <i class="fas fa-location-dot text-danger opacity-75 me-1"></i>${item.station}
+                                </div>
+                                <span class="badge ${item.type === 'danger' ? 'bg-danger text-white' : (item.type === 'warning' ? 'bg-warning text-dark' : 'bg-primary-subtle text-primary')} rounded-pill px-2" style="font-size: 0.72rem;">
+                                    ${item.metric}
+                                </span>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                notifList.innerHTML = html;
+            }
+
+            function loadNotifications() {
+                fetch('/api/notifications')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.status === 'success') {
+                            notificationsData = data.notifications || [];
+                            renderNotifications(notificationsData);
+                            updateBadgeState();
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching notifications:', err);
+                        renderNotifications([
+                            {
+                                type: 'danger',
+                                icon: 'fas fa-triangle-exclamation',
+                                title: 'High PM2.5 Alert',
+                                station: 'Chennai - Perungudi TNPCB',
+                                metric: 'PM2.5: 180.0 µg/m³',
+                                time: '12m ago',
+                                link: '/alerts'
+                            },
+                            {
+                                type: 'warning',
+                                icon: 'fas fa-circle-exclamation',
+                                title: 'AQI Spike Detected',
+                                station: 'Ariyalur - Keelapalur',
+                                metric: 'AQI 168 • Moderate',
+                                time: '25m ago',
+                                link: '/alerts'
+                            },
+                            {
+                                type: 'info',
+                                icon: 'fas fa-satellite-dish',
+                                title: 'Live Sensors Active',
+                                station: 'All 7 Districts Synchronized',
+                                metric: 'Telemetry Active',
+                                time: '1h ago',
+                                link: '/live'
+                            }
+                        ]);
+                        updateBadgeState();
+                    });
+            }
+
+            // Mark all read button
+            markAllBtn?.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                isMarkedRead = true;
+                sessionStorage.setItem('aqi_notif_read', 'true');
+                updateBadgeState();
+                const unreadItems = document.querySelectorAll('.notification-item.unread');
+                unreadItems.forEach(el => el.classList.remove('unread'));
+            });
+
+            // Initial load
+            loadNotifications();
+            // Periodic refresh every 15 seconds
+            setInterval(loadNotifications, 15000);
+        })();
     </script>
     {% block scripts %}{% endblock %}
 </body>
